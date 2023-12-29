@@ -1,0 +1,10 @@
+html, .R-body
+{
+    height: 100%;
+}
+
+.R-body
+{
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}

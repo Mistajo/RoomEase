@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang='fr'>
+	<head>
+
+		<meta charset="UTF-8">
+
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta http-equiv="X-UA-Compatible" content="IE=7">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<meta name="robots" content="index, follow">
+
+		<title>RoomEase
+			{% block title %}{% endblock %}
+		</title>
+
+		{# Favicon #}
+		<link rel="apple-touch-icon" sizes="180x180" href="{{asset('favicon/apple-touch-icon.png')}}">
+		<link rel="icon" type="image/png" sizes="32x32" href="{{asset('favicon/favicon-32x32.png')}}">
+		<link rel="icon" type="image/png" sizes="16x16" href="{{asset('favicon/favicon-16x16.png')}}">
+		<link rel="manifest" href="{{asset('favicon/site.webmanifest')}}">
+		<link rel="mask-icon" href="{{asset('favicon//safari-pinned-tab.svg')}}" color="#5bbad5">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="theme-color" content="#ffffff">
+
+
+		<meta name="description" content="{% block description %}{% endblock %}">
+
+		<meta name="keywords" content="{% block keywords %}{% endblock %}">
+
+		{% block Boostrap %}
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+			<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+		{% endblock %}
+
+
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+
+	</head>
+	<body
+		class="R-body">
+
+		{# Navbar #}
+		{% include "layouts/navbar/navbar_visitor.html.twig" %}
+
+		<main>
+			{% block main %}{% endblock %}
+		</main>
+
+		{% include "layouts/footer/footer_visitor.html.twig" %}
+	</body>
+</html>
