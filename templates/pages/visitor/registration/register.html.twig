@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>RoomEase - Inscription</title>
+
+		{# Favicon #}
+		<link rel="apple-touch-icon" sizes="180x180" href="{{asset('favicon/apple-touch-icon.png')}}">
+		<link rel="icon" type="image/png" sizes="32x32" href="{{asset('favicon/favicon-32x32.png')}}">
+		<link rel="icon" type="image/png" sizes="16x16" href="{{asset('favicon/favicon-16x16.png')}}">
+		<link rel="manifest" href="{{asset('favicon/site.webmanifest')}}">
+		<link rel="mask-icon" href="{{asset('favicon//safari-pinned-tab.svg')}}" color="#5bbad5">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="theme-color" content="#ffffff">
+
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+
+
+	</head>
+	<body class="h-100">
+		<div class="container d-flex justify-content-center align-items-center my-5 py-5">
+
+			{% for flash_error in app.flashes('verify_email_error') %}
+				<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+			{% endfor %}
+
+			{{ form_start(registrationForm) }}
+			<div class="row">
+				<div class="col-md-6">
+					<div class="mb-3">
+						<label for="registration_form_firstName">Prénom</label>
+						<div class="text-danger">{{ form_errors(registrationForm.firstName) }}</div>
+						{{ form_widget(registrationForm.firstName, {'attr' : {'class': 'form-control'}}) }}
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="mb-3">
+						<label for="registration_form_lastName">Nom</label>
+						<div class="text-danger">{{ form_errors(registrationForm.lastName) }}</div>
+						{{ form_widget(registrationForm.lastName, {'attr' : {'class': 'form-control'}}) }}
+					</div>
+				</div>
+			</div>
+			<div class="mb-3">
+				<label for="registration_form_email">Email</label>
+				<div class="text-danger">{{ form_errors(registrationForm.email) }}</div>
+				{{ form_widget(registrationForm.email, {'attr' : {'class': 'form-control'}}) }}
+			</div>
+			<div class="mb-3">
+				<label for="registration_form_password_first">Mot de passe</label>
+				<div class="text-danger">{{ form_errors(registrationForm.password.first) }}</div>
+				{{ form_widget(registrationForm.password.first, {'attr' : {'class': 'form-control'}}) }}
+			</div>
+			<div class="mb-3">
+				<label for="registration_form_password_second">Confirmation du mot de passe</label>
+				{{ form_widget(registrationForm.password.second, {'attr' : {'class': 'form-control'}}) }}
+			</div>
+
+			<div class="mb-3">
+				<label for="registration_form_agreeTerms">
+					<div class="text-danger">{{ form_errors(registrationForm.agreeTerms) }}</div>
+					{{ form_widget(registrationForm.agreeTerms) }}
+					Veuillez accepter
+					<a data-bs-toggle="modal" data-bs-target="#registerModal" href="#">les conditions générales d'utilisation</a>
+					<!-- Modal -->
+					<div class="modal fade" id="registerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h1 class="modal-title fs-5" id="exampleModalLabel">les conditions générales d'utilisation</h1>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<h3>
+										Conditions Générales d'Utilisation (CGU)
+									</h3>
+									<h5>
+										1. Objet du site :
+									</h5>
+									<p>
+										Le site de Ride-Location a pour objet de permettre aux utilisateurs de réserver des véhicules proposés par différentes agences, selon les disponibilités et les conditions spécifiées.
+									</p>
+									<h5>
+										2. Utilisation du site :
+									</h5>
+									<p>
+										L'utilisation de ce site est soumise aux présentes conditions générales d'utilisation. En utilisant ce site, vous acceptez ces conditions.
+									</p>
+									<h5>
+										3. Inscription :
+									</h5>
+									<p>
+										L'inscription est obligatoire pour utiliser certaines fonctionnalités du site. Vous devez fournir des informations exactes et complètes lors de votre inscription et maintenir ces informations à jour. Vous êtes responsable de la confidentialité de vos identifiants de connexion.
+									</p>
+									<h5>
+										4. Réservation des véhicules :
+									</h5>
+									<p>
+										Les réservations de véhicules sur le site sont soumises à la disponibilité des véhicules au moment de la réservation. Le site ne garantit pas la disponibilité d'un véhicule spécifique. Les conditions de location, y compris les tarifs, sont spécifiées par chaque agence et peuvent varier.
+									</p>
+									<h5>
+										5. Paiement :
+									</h5>
+									<p>
+										Le paiement des locations de véhicules se fait directement auprès de votre agence. Le site agit uniquement en tant qu'intermédiaire et ne collecte pas de paiement directement.
+									</p>
+									<h5>
+										6. Annulation et modifications :
+									</h5>
+									<p>
+										Les politiques d'annulation et de modification des réservations sont définies par les agences. Il est recommandé de consulter attentivement les conditions spécifiques de chaque agence avant de procéder à une réservation.
+									</p>
+									<h5>
+										7. Responsabilité :
+									</h5>
+									<p>
+										Le site ne peut être tenu responsable des dommages directs, indirects, accessoires ou consécutifs résultant de l'utilisation du site ou de l'indisponibilité des véhicules. Chaque agence est responsable de la location de ses propres véhicules et des services associés.
+									</p>
+									<h5>
+										8. Protection des données personnelles :
+									</h5>
+									<p>
+										Le site collecte et traite les données personnelles conformément au Règlement Général sur la Protection des Données (RGPD) et à la Politique de Confidentialité du site. Les utilisateurs consentent à la collecte, au traitement et à l'utilisation de leurs données personnelles conformément à ces documents.
+									</p>
+									<h5>
+										9. Propriété intellectuelle :
+									</h5>
+									<p>
+										Le contenu du site, y compris les textes, les images, les logos et les marques, est protégé par des droits de propriété intellectuelle et ne peut être utilisé sans autorisation préalable.
+									</p>
+									<h5>
+										10. Modifications des CGU :
+									</h5>
+									<p>
+										Le site se réserve le droit de modifier les présentes conditions générales d'utilisation à tout moment. Les modifications entreront en vigueur dès leur publication sur le site. Il est de la responsabilité de l'utilisateur de consulter régulièrement les CGU pour être informé des éventuelles modifications.
+									</p>
+									<h3>
+										Conditions générales de vente (CGV)
+									</h3>
+									<p>
+										Les conditions générales de vente régissent les transactions commerciales effectuées entre l'utilisateur du site et l'agence. Elles définissent les obligations des parties, les modalités de paiement, les responsabilités et les conditions d'annulation. Les CGV sont spécifiques à chaque agence et peuvent varier d'une agence à l'autre. Il est important de consulter les CGV avant de conclure une réservation.
+										<h3>
+											Règlement Général sur la Protection des Données (RGPD)</h3>
+									</p>
+									<p>Le site est conforme au RGPD, qui régit la collecte, le traitement et l'utilisation des données personnelles des utilisateurs. Les utilisateurs ont des droits sur leurs données personnelles, tels que le droit d'accès, de rectification, d'effacement et de limitation du traitement. La Politique de Confidentialité du site précise comment les données personnelles sont collectées, traitées et protégées.</p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</label>
+			</div>
+
+			<div class="mb-3">
+				<input value="Je m'inscris" formnovalidate type="submit" class="btn btn-primary w-100 shadow">
+			</div>
+
+			<p class="my-1">Vous avez déjà un compte ?
+				<a href="#">Connectez-vous</a>
+			</p>
+			<p class="my-1">
+				<a href="{{path('visitor.welcome.index')}}">Retour à l'accueil</a>
+			</p>
+			{{ form_end(registrationForm) }}
+		</div>
+	</body>
+</html>
