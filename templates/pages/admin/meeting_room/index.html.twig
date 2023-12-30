@@ -85,9 +85,10 @@
 
 
 							<!-- Boutton  -->
-							<div class="d-flex justify-content-center align-items-center mx-2 my-2">
+							<div class=" d-flex justify-content-between">
 								<a href="#" class="btn btn-primary">Modifier</a>
-								<a href="#" class="btn btn-danger ms-auto" onclick="event.preventDefault(); return confirm('Voulez vous vraiment supprimer cette salle?') && document.querySelector('#form_delete_meetingroom_{{meetingroom.id}}').submit()" title="Supprimer">Supprimer</a>
+								<a href="#" class="btn btn-secondary">Voir Plus</a>
+								<a href="#" class="btn btn-danger" onclick="event.preventDefault(); return confirm('Voulez vous vraiment supprimer cette salle?') && document.querySelector('#form_delete_meetingroom_{{meetingroom.id}}').submit()" title="Supprimer">Supprimer</a>
 								<form method="POST" id="form_delete_meetingroom_{{meetingroom.id}}" action="#">
 									<input type="hidden" name="csrf_token" value="{{csrf_token('delete_meetingroom_'~meetingroom.id)}}">
 									<input type="hidden" name="_method" value="delete">
