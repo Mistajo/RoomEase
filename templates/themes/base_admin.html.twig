@@ -8,7 +8,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=7">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		<meta name="robots" content="index, follow">
+		<meta name="robots" content="noindex, nofollow">
 
 		<title>RoomEase
 			{% block title %}{% endblock %}
@@ -58,12 +58,12 @@
 		class="R-body">
 
 		{# Navbar #}
-		{% include "layouts/navbar/navbar_visitor.html.twig" %}
+		{% include "layouts/navbar/navbar_admin.html.twig" %}
 
 		<main>
 			{% block main %}{% endblock %}
 		</main>
 
-		{% include "layouts/footer/footer_visitor.html.twig" %}
+		{% include "layouts/footer/footer_admin.html.twig" %}
 	</body>
 </html>
