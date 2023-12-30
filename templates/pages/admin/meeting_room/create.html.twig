@@ -1,0 +1,75 @@
+{% extends 'themes/base_admin.html.twig' %}
+
+{% block title %}
+	- Reservation salle de réunion - Espace Admin - Gestion des Salles
+{% endblock %}
+
+{% block main %}
+
+	<!-- Titre de la page -->
+	<h1 class=' text-secondary text-center my-3 display-5'>Nouvelle Salle</h1>
+	<!-- Fin Titre de la page -->
+	<div
+		class="container d-flex justify-content-center align-items-center my-5 py-5">
+
+		<!-- Formulaire de creation de salle -->
+		<div
+			class="row">
+
+			<!-- Nom -->
+			{{ form_start(form) }}
+			<div class="mb-3">
+				<label for="">Nom :</label>
+				<div class="text-danger">{{form_errors(form.name)}}</div>
+				{{form_widget(form.name, {'attr': {'class': 'form-control'}})}}
+			</div>
+			<!-- Fin Nom -->
+
+			<!-- Capacité -->
+			<div class="mb-3">
+				<label for="">Capacité :</label>
+				<div class="text-danger">{{form_errors(form.Capacity)}}</div>
+				{{form_widget(form.Capacity, {'attr': {'class': 'form-control'}})}}
+			</div>
+			<!-- Fin Capacité -->
+
+			<!-- Description -->
+			<div class="mb-3">
+				<label for="">Description :</label>
+				<div class="text-danger">{{form_errors(form.Description)}}</div>
+				{{form_widget(form.Description, {'attr': {'class': 'form-control'}})}}
+			</div>
+			<!-- Fin Description -->
+
+			<!-- Equipements -->
+			<div class="mb-3">
+				<label for="">Equipements :</label>
+				<div class="text-danger">{{form_errors(form.equipments)}}</div>
+				{{form_widget(form.equipments, {'attr': {'class': 'form-control'}})}}
+			</div>
+			<!-- Fin Equipements -->
+
+
+			<!-- Image -->
+			<div class="mb-3">
+				<label for="">Image</label>
+				<div class="text-danger">{{form_errors(form.imageFile)}}</div>
+				{{form_widget(form.imageFile, {'attr': {'class': 'form-control'}})}}
+			</div>
+			<!-- Fin Image -->
+
+			<!-- Bouton de creation -->
+			<div class="mb-3">
+				<input formnovalidate type="submit" class="btn btn-primary" value="Créer">
+			</div>
+			<!-- Fin Bouton de creation -->
+
+			{{ form_end(form) }}
+		</div>
+		<!-- Fin Formulaire de creation de salle -->
+
+
+	</div>
+
+
+{% endblock %}
