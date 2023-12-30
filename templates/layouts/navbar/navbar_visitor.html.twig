@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-secondary">
 	<div class="container-fluid">
-		<a class="navbar-brand col-md-3 col-lg-2 my-1  fs-6" href="#"><img src="{{asset('Logo/RoomEase_Logo.png')}}" alt="RoomEase Logo" class=' w-50 h-25'></a>
+		<a class="navbar-brand col-md-3 col-lg-2 my-1  fs-6" href="{{path('visitor.welcome.index')}}"><img src="{{asset('Logo/RoomEase_Logo.png')}}" alt="RoomEase Logo" class=' w-50 h-25'></a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -8,7 +8,7 @@
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav me-auto">
 				<li class="nav-item">
-					<a class="nav-link active text-white" aria-current="page" href="#">Accueil</a>
+					<a class="nav-link active text-white" aria-current="page" href="{{path('visitor.welcome.index')}}">Accueil</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link text-white" href="#">A Propos</a>
@@ -38,13 +38,13 @@
 									<a class="dropdown-item" href="#">Espace client</a>
 								</li>
 								<li>
-									<a class="dropdown-item" href="#">Déconnexion</a>
+									<a class="dropdown-item" href="{{path('app_logout')}}">Déconnexion</a>
 								</li>
 							</ul>
 						</li>
 					</ul>
 				{% else %}
-					<a href="#" class="btn btn-primary my-3 my-lg-0">Connexion</a>
+					<a href="{{path('visitor.authentication.login')}}" class="btn btn-primary my-3 my-lg-0">Connexion</a>
 					<a href="{{path('visitor.registration.register')}}" class="btn btn-light my-3 my-lg-0 mx-lg-2">Inscription</a>
 				{% endif %}
 

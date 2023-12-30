@@ -43,7 +43,7 @@ class RegistrationController extends AbstractController
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $form->get('password')->getData()
                 )
             );
 
@@ -76,7 +76,7 @@ class RegistrationController extends AbstractController
         return $this->render("pages/visitor/registration/waiting_for_email_verification.html.twig");
     }
 
-    #[Route('/verify/email', name: 'app_verify_email')]
+    #[Route('/verify/email', name: 'visitor.registration.email_verification')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository, EntityManagerInterface $em): Response
     {
         $id = $request->query->get('id');
