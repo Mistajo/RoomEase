@@ -1,0 +1,103 @@
+{% extends 'themes/base_admin.html.twig' %}
+
+{% block title %}
+	- Reservation salle de réunion - Espace Admin - Gestion des Salles
+{% endblock %}
+
+{% block main %}
+	<!-- Titre de la page -->
+	<h1 class=' text-secondary text-center my-3 display-5'>Gestion des Salles</h1>
+	<!-- Fin Titre de la page -->
+
+	<!--Alerte Flash-->
+	<div class="col-md-6 mx-auto">
+		{% for message in app.flashes('success') %}
+			<div class="text-center alert alert-success alert-dismissible fade show" role="alert">
+				{{message}}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		{% endfor %}
+
+		{% for message in app.flashes('warning') %}
+			<div class="text-center alert alert-warning alert-dismissible fade show" role="alert">
+				{{message}}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		{% endfor %}
+	</div>
+	<!--Fin Alerte Flash-->
+
+	<!-- Card Creation nouvelle salle-->
+	<div class="d-flex justify-content-end align-items-center mx-3">
+		<a class="btn btn-secondary" href="{{path('admin.meetingroom.create')}}">
+			<i class="fa-solid fa-plus shadow"></i>
+			Nouvelle Salle</a>
+	</div>
+	<!-- Fin Card Creation nouvelle salle-->
+
+
+	<div class="container mt-5 d-flex justify-content-center">
+		<div class="row">
+			{% for meetingroom in meetingrooms %}
+				<div class="col-md-6 mb-4 d-flex justify-content-center">
+					<div class="card mb-3 border shadow w-75 h-100">
+						<a href="#">
+							{% if meetingroom.image %}
+								<img src="{{ vich_uploader_asset(meetingroom, 'imageFile') }}" alt="{{ meetingroom.name }}" class='card-img-top img-fluid'>
+							{% else %}
+								<img src="{{asset('images/NoImage/No_Image.jpg')}}" alt="{{ meetingroom.description|striptags|u.truncate(30, '...')}}" class="card-img-top img-fluid">
+
+
+							{% endif %}
+						</a>
+						<div class="card-body">
+							<h5 class="card-title">Nom de la salle :
+								<strong>
+									{{meetingroom.name}}
+								</strong>
+							</h5>
+							<p class="card-text">Capacité :
+								{{ meetingroom.Capacity|striptags|u.truncate(70, '...')|raw }}
+								Personnes</p>
+							{% if meetingroom.description is not empty %}
+								<p class="card-text">Description :
+									{{ meetingroom.description|striptags|u.truncate(70, '...')|raw }}
+								</p>
+							{% endif %}
+
+							<p class="card-text">Equipements :
+								{{ meetingroom.equipments|striptags|u.truncate(70, '...')|raw }}
+							</p>
+
+							<p>
+								<a href="{{path('admin.meetingroom.edit', {'id': meetingroom.id})}}" class="btn btn-primary">Modifier</a>
+
+								<a href="#" class="btn btn-secondary">Voir Plus</a>
+								<a href="#" class="btn btn-danger" onclick="event.preventDefault(); return confirm('Voulez vous vraiment supprimer cette salle?') && document.querySelector('#form_delete_meetingroom_{{meetingroom.id}}').submit()" title="Supprimer">Supprimer</a>
+								<form method="POST" id="form_delete_meetingroom_{{meetingroom.id}}" action="{{path('admin.meetingroom.delete', {'id':meetingroom.id})}}">
+
+									<input type="hidden" name="csrf_token" value="{{csrf_token('delete_meetingroom_'~meetingroom.id)}}">
+									<input type="hidden" name="_method" value="delete">
+								</form>
+							</p>
+
+							<p class="card-text d-flex justify-content-between mt-3">
+								<small class="text-body-secondary">Créer
+									{{meetingroom.createdAt|ago}}</small>
+
+								<small class="text-body-secondary">Modifié
+									{{meetingroom.updatedAt|ago}}</small>
+							</p>
+
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+			{# display navigation
+																																																																																																						<div class="mt-2 d-flex justify-content-center">
+																																																																																																							{{ knp_pagination_render(agencies) }}
+																																																																																																						</div> #}
+		</div>
+	</div>
+
+{% endblock %}

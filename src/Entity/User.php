@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -94,10 +96,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Search::class)]
+    private Collection $searches;
+
     public function __construct()
     {
         $this->roles[] = "ROLE_USER";
         $this->isVerified = false;
+        $this->searches = new ArrayCollection();
     }
 
 
@@ -246,5 +252,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function isVerified(): bool
     {
         return $this->isVerified;
+    }
+
+    /**
+     * @return Collection<int, Search>
+     */
+    public function getSearches(): Collection
+    {
+        return $this->searches;
+    }
+
+    public function addSearch(Search $search): static
+    {
+        if (!$this->searches->contains($search)) {
+            $this->searches->add($search);
+            $search->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSearch(Search $search): static
+    {
+        if ($this->searches->removeElement($search)) {
+            // set the owning side to null (unless already changed)
+            if ($search->getUser() === $this) {
+                $search->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
