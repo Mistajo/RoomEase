@@ -83,10 +83,14 @@ class MeetingRoom
     #[ORM\ManyToMany(targetEntity: Search::class, mappedBy: 'meetingroom')]
     private Collection $searches;
 
+    #[ORM\OneToMany(mappedBy: 'meetingroom', targetEntity: Reservation::class)]
+    private Collection $reservations;
+
     public function __construct()
     {
         $this->isAvailable = true;
         $this->searches = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -249,6 +253,36 @@ class MeetingRoom
     {
         if ($this->searches->removeElement($search)) {
             $search->removeMeetingroom($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setMeetingroom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getMeetingroom() === $this) {
+                $reservation->setMeetingroom(null);
+            }
         }
 
         return $this;
