@@ -5,6 +5,16 @@
 {% endblock %}
 
 {% block main %}
+
+	<nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+		<ol class="breadcrumb mx-3 mt-3">
+			<li class="breadcrumb-item">
+				<a href="{{path('admin.home.dashboard')}}">Espace Admin</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">Gestion des salles</li>
+		</ol>
+	</nav>
+
 	<!-- Titre de la page -->
 	<h1 class=' text-secondary text-center my-3 display-5'>Gestion des Salles</h1>
 	<!-- Fin Titre de la page -->
@@ -57,7 +67,7 @@
 								</strong>
 							</h5>
 							<p class="card-text">Capacité :
-								{{ meetingroom.Capacity|striptags|u.truncate(70, '...')|raw }}
+								{{ meetingroom.Capacity }}
 								Personnes</p>
 							{% if meetingroom.description is not empty %}
 								<p class="card-text">Description :
@@ -72,7 +82,8 @@
 							<p>
 								<a href="{{path('admin.meetingroom.edit', {'id': meetingroom.id})}}" class="btn btn-primary">Modifier</a>
 
-								<a href="#" class="btn btn-secondary">Voir Plus</a>
+								<a href="{{path('admin.meetingroom.show', {'id' : meetingroom.id})}}" class="btn btn-secondary">Voir Plus</a>
+
 								<a href="#" class="btn btn-danger" onclick="event.preventDefault(); return confirm('Voulez vous vraiment supprimer cette salle?') && document.querySelector('#form_delete_meetingroom_{{meetingroom.id}}').submit()" title="Supprimer">Supprimer</a>
 								<form method="POST" id="form_delete_meetingroom_{{meetingroom.id}}" action="{{path('admin.meetingroom.delete', {'id':meetingroom.id})}}">
 
@@ -94,9 +105,9 @@
 				</div>
 			{% endfor %}
 			{# display navigation
-																																																																																																						<div class="mt-2 d-flex justify-content-center">
-																																																																																																							{{ knp_pagination_render(agencies) }}
-																																																																																																						</div> #}
+																																																																																																																														<div class="mt-2 d-flex justify-content-center">
+																																																																																																																															{{ knp_pagination_render(agencies) }}
+																																																																																																																														</div> #}
 		</div>
 	</div>
 

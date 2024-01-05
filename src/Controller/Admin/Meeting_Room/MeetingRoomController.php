@@ -42,14 +42,14 @@ class MeetingRoomController extends AbstractController
         ]);
     }
 
-    // #[Route('/meetingroom/{id}/show', name: 'admin.meetingroom.show', methods: ['GET'])]
-    // public function show(MeetingRoom $meetingRoom): Response
-    // {
-    //     return $this->render('pages/admin/meetingroom/show.html.twig', [
+    #[Route('/meetingroom/{id}/show', name: 'admin.meetingroom.show', methods: ['GET'])]
+    public function show(MeetingRoom $meetingRoom): Response
+    {
+        return $this->render('pages/admin/meetingroom/show.html.twig', [
 
-    //         'meetingroom' => $meetingRoom,
-    //     ]);
-    // }
+            'meetingroom' => $meetingRoom,
+        ]);
+    }
 
     #[Route('/meetingroom/{id}/edit', name: 'admin.meetingroom.edit', methods: ['GET', 'PUT'])]
     public function edit(MeetingRoom $meetingRoom, Request $request, EntityManagerInterface $em): Response

@@ -1,7 +1,7 @@
 {% extends 'themes/base_admin.html.twig' %}
 
 {% block title %}
-	- Reservation salle de réunion - Espace Admin - Détail de la
+	- Reservation salle de réunion - Espace User - Détail de la
 	{{meetingroom.name}}
 {% endblock %}
 
@@ -10,11 +10,7 @@
 	<nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
 		<ol class="breadcrumb mx-3 mt-3">
 			<li class="breadcrumb-item">
-				<a href="{{path('admin.home.dashboard')}}">Espace Admin</a>
-
-			</li>
-			<li class="breadcrumb-item">
-				<a href="{{path('admin.meetingroom.index')}}">Toutes les salles</a>
+				<a href="{{path('user.home.index')}}">Espace Utilisateur</a>
 			</li>
 			<li class="breadcrumb-item active" aria-current="page">{{meetingroom.name|u.truncate('50','...')}}</li>
 		</ol>
