@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use App\Repository\EquipmentRepository;
@@ -42,6 +44,18 @@ class Equipment
     #[Gedmo\Timestampable(on: 'update')]
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\ManyToMany(targetEntity: MeetingRoom::class, mappedBy: 'equipment')]
+    private Collection $meetingRooms;
+
+    #[ORM\ManyToMany(targetEntity: Search::class, mappedBy: 'equipments')]
+    private Collection $searches;
+
+    public function __construct()
+    {
+        $this->meetingRooms = new ArrayCollection();
+        $this->searches = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -94,5 +108,64 @@ class Equipment
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, MeetingRoom>
+     */
+    public function getMeetingRooms(): Collection
+    {
+        return $this->meetingRooms;
+    }
+
+    public function addMeetingRoom(MeetingRoom $meetingRoom): static
+    {
+        if (!$this->meetingRooms->contains($meetingRoom)) {
+            $this->meetingRooms->add($meetingRoom);
+            $meetingRoom->addEquipment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeetingRoom(MeetingRoom $meetingRoom): static
+    {
+        if ($this->meetingRooms->removeElement($meetingRoom)) {
+            $meetingRoom->removeEquipment($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Search>
+     */
+    public function getSearches(): Collection
+    {
+        return $this->searches;
+    }
+
+    public function addSearch(Search $search): static
+    {
+        if (!$this->searches->contains($search)) {
+            $this->searches->add($search);
+            $search->addEquipment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSearch(Search $search): static
+    {
+        if ($this->searches->removeElement($search)) {
+            $search->removeEquipment($this);
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }

@@ -17,11 +17,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class MeetingRoomController extends AbstractController
 {
     #[Route('/meeting_room/list', name: 'admin.meetingroom.index')]
-    public function index(MeetingRoomRepository $meetingRoomRepository): Response
+    public function index(MeetingRoomRepository $meetingRoomRepository, Request $request): Response
     {
         $meetingrooms = $meetingRoomRepository->findAll();
+        $search = new Search();
+        $form = $this->createForm(SearchFormType::class, $search);
+        $form->handleRequest($request);
+        $meetingrooms = $meetingRoomRepository->Search($search);
+
         return $this->render('pages/admin/meetingroom/index.html.twig', [
-            'meetingrooms' => $meetingrooms
+            'meetingrooms' => $meetingrooms,
+            'form' => $form->createView(),
         ]);
     }
 

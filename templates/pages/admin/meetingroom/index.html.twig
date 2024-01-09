@@ -4,111 +4,194 @@
 	- Reservation salle de réunion - Espace Admin - Gestion des Salles
 {% endblock %}
 
+{% block jQuery %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock %}
+
+
 {% block main %}
-
-	<nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-		<ol class="breadcrumb mx-3 mt-3">
-			<li class="breadcrumb-item">
-				<a href="{{path('admin.home.dashboard')}}">Espace Admin</a>
-			</li>
-			<li class="breadcrumb-item active" aria-current="page">Gestion des salles</li>
-		</ol>
-	</nav>
-
-	<!-- Titre de la page -->
-	<h1 class=' text-secondary text-center my-3 display-5'>Gestion des Salles</h1>
-	<!-- Fin Titre de la page -->
-
-	<!--Alerte Flash-->
-	<div class="col-md-6 mx-auto">
-		{% for message in app.flashes('success') %}
-			<div class="text-center alert alert-success alert-dismissible fade show" role="alert">
-				{{message}}
-				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-			</div>
-		{% endfor %}
-
-		{% for message in app.flashes('warning') %}
-			<div class="text-center alert alert-warning alert-dismissible fade show" role="alert">
-				{{message}}
-				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-			</div>
-		{% endfor %}
-	</div>
-	<!--Fin Alerte Flash-->
-
-	<!-- Card Creation nouvelle salle-->
-	<div class="d-flex justify-content-end align-items-center mx-3">
-		<a class="btn btn-secondary" href="{{path('admin.meetingroom.create')}}">
-			<i class="fa-solid fa-plus shadow"></i>
-			Nouvelle Salle</a>
-	</div>
-	<!-- Fin Card Creation nouvelle salle-->
+	<div
+		class="container my-2">
 
 
-	<div class="container mt-5 d-flex justify-content-center">
-		<div class="row">
-			{% for meetingroom in meetingrooms %}
-				<div class="col-md-6 mb-4 d-flex justify-content-center">
-					<div class="card mb-3 border shadow w-75 h-100">
-						<a href="#">
-							{% if meetingroom.image %}
-								<img src="{{ vich_uploader_asset(meetingroom, 'imageFile') }}" alt="{{ meetingroom.name }}" class='card-img-top img-fluid'>
-							{% else %}
-								<img src="{{asset('images/NoImage/No_Image.jpg')}}" alt="{{ meetingroom.description|striptags|u.truncate(30, '...')}}" class="card-img-top img-fluid">
+		<!-- Breadcrumb-->
+		<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class='mx-5 mt-5'>
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item">
+					<a href="{{path('admin.home.dashboard')}}">Tableau de bord</a>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">Liste des salles</li>
+			</ol>
+		</nav>
+		<!-- Fin Breadcrumb-->
 
 
-							{% endif %}
-						</a>
-						<div class="card-body">
-							<h5 class="card-title">Nom de la salle :
-								<strong>
-									{{meetingroom.name}}
-								</strong>
-							</h5>
-							<p class="card-text">Capacité :
-								{{ meetingroom.Capacity }}
-								Personnes</p>
-							{% if meetingroom.description is not empty %}
-								<p class="card-text">Description :
-									{{ meetingroom.description|striptags|u.truncate(70, '...')|raw }}
-								</p>
-							{% endif %}
+		<!-- Titre de la page -->
+		<h1 class=' text-secondary text-center my-3 display-5'>Gestion des Salles</h1>
+		<!-- Fin Titre de la page -->
 
-							<p class="card-text">Equipements :
-								{{ meetingroom.equipments|striptags|u.truncate(70, '...')|raw }}
-							</p>
-
-							<p>
-								<a href="{{path('admin.meetingroom.edit', {'id': meetingroom.id})}}" class="btn btn-primary">Modifier</a>
-
-								<a href="{{path('admin.meetingroom.show', {'id' : meetingroom.id})}}" class="btn btn-secondary">Voir Plus</a>
-
-								<a href="#" class="btn btn-danger" onclick="event.preventDefault(); return confirm('Voulez vous vraiment supprimer cette salle?') && document.querySelector('#form_delete_meetingroom_{{meetingroom.id}}').submit()" title="Supprimer">Supprimer</a>
-								<form method="POST" id="form_delete_meetingroom_{{meetingroom.id}}" action="{{path('admin.meetingroom.delete', {'id':meetingroom.id})}}">
-
-									<input type="hidden" name="csrf_token" value="{{csrf_token('delete_meetingroom_'~meetingroom.id)}}">
-									<input type="hidden" name="_method" value="delete">
-								</form>
-							</p>
-
-							<p class="card-text d-flex justify-content-between mt-3">
-								<small class="text-body-secondary">Créer
-									{{meetingroom.createdAt|ago}}</small>
-
-								<small class="text-body-secondary">Modifié
-									{{meetingroom.updatedAt|ago}}</small>
-							</p>
-
-						</div>
-					</div>
+		<!--Alerte Flash-->
+		<div class="col-md-6 mx-auto">
+			{% for message in app.flashes('success') %}
+				<div class="text-center alert alert-success alert-dismissible fade show" role="alert">
+					{{message}}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			{% endfor %}
-			{# display navigation
-																																																																																																																														<div class="mt-2 d-flex justify-content-center">
-																																																																																																																															{{ knp_pagination_render(agencies) }}
-																																																																																																																														</div> #}
+
+			{% for message in app.flashes('warning') %}
+				<div class="text-center alert alert-warning alert-dismissible fade show" role="alert">
+					{{message}}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			{% endfor %}
 		</div>
+		<!--Fin Alerte Flash-->
+
+		<div class=' jumbotron'>
+			{{ form_start(form) }}
+			<div class="row">
+				<div class="col-md-6">
+					<div class="mb-3">
+						<label for="">Nom</label>
+						<div class="text-danger">{{ form_errors(form.name) }}</div>
+						{{ form_widget(form.name, {'attr' : {'class': 'form-control'}}) }}
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="mb-3">
+						<label for="">Equipements</label>
+						<div class="text-danger">{{ form_errors(form.equipments) }}</div>
+						{{ form_widget(form.equipments, {'attr' : {'class': 'form-control,'}}) }}
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="mb-3">
+						<label for="">Capacité Minimale</label>
+						<div class="text-danger">{{ form_errors(form.minCapacity) }}</div>
+						{{ form_widget(form.minCapacity, {'attr' : {'class': 'form-control'}}) }}
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="mb-3">
+						<label for="">Capacité Maximale</label>
+						<div class="text-danger">{{ form_errors(form.maxCapacity) }}</div>
+						{{ form_widget(form.maxCapacity, {'attr' : {'class': 'form-control'}}) }}
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="mb-3">
+						<label for="">Prix Minimum</label>
+						<div class="text-danger">{{ form_errors(form.minPrice) }}</div>
+						{{ form_widget(form.minPrice, {'attr' : {'class': 'form-control'}}) }}
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="mb-3">
+						<label for="">Prix Maximum</label>
+						<div class="text-danger">{{ form_errors(form.maxPrice) }}</div>
+						{{ form_widget(form.maxPrice, {'attr' : {'class': 'form-control'}}) }}
+					</div>
+				</div>
+			</div>
+
+
+			<div class="mb-3 text-center">
+				<button type="submit" class='btn btn-primary'>Filtrer</button>
+			</div>
+
+
+		</div>
+		{{ form_end(form) }}
 	</div>
 
+	<div
+		class="row">
+		<!-- Card Creation nouvelle salle-->
+		<div class="d-flex justify-content-end align-items-center mx-3 my-3">
+			<a class="btn btn-secondary" href="{{path('admin.meetingroom.create')}}">
+				<i class="fa-solid fa-plus shadow"></i>
+				Nouvelle Salle</a>
+		</div>
+		<!-- Fin Card Creation nouvelle salle-->
+
+
+		{% for meetingroom in meetingrooms %}
+			<div class="col-md-4 mb-4 d-flex justify-content-center">
+				<div class="card mb-3 border shadow w-75 h-100">
+					<a href="#">
+						{% if meetingroom.image %}
+							<img src="{{ vich_uploader_asset(meetingroom, 'imageFile') }}" alt="{{ meetingroom.name }}" class='card-img-top img-fluid'>
+						{% else %}
+							<img src="{{asset('images/NoImage/No_Image.jpg')}}" alt="{{ meetingroom.description|striptags|u.truncate(30, '...')}}" class="card-img-top img-fluid">
+
+
+						{% endif %}
+					</a>
+					<div class="card-body">
+						<h5 class="card-title">Nom de la salle :
+							<strong>
+								{{meetingroom.name}}
+							</strong>
+						</h5>
+						<li>
+							Capacité :
+							{{ meetingroom.Capacity }}
+							Personnes
+						</li>
+						{% if meetingroom.description is not empty %}
+							<p class="card-text">Description :
+								{{ meetingroom.description|striptags|u.truncate(70, '...')|raw }}
+							</p>
+						{% endif %}
+
+						<li>
+							Equipements :
+							{% if meetingroom.equipment is empty %}
+								<p>---</p>
+							{% else %}
+								{% for equipment in meetingroom.equipment %}
+									<span class="badge text-bg-primary">{{equipment.name}}</span>
+								{% endfor %}
+							{% endif %}
+						</li>
+
+						<div class="d-flex justify-content-between align-items-center gap-1 mt-2">
+							<a href="{{path('admin.meetingroom.edit', {'id': meetingroom.id})}}" class="btn btn-primary">Modifier</a>
+
+							<a href="{{path('admin.meetingroom.show', {'id' : meetingroom.id})}}" class="btn btn-secondary">Voir Plus</a>
+
+							<a href="#" class="btn btn-danger" onclick="event.preventDefault(); return confirm('Voulez vous vraiment supprimer cette salle?') && document.querySelector('#form_delete_meetingroom_{{meetingroom.id}}').submit()" title="Supprimer">Supprimer</a>
+							<form method="POST" id="form_delete_meetingroom_{{meetingroom.id}}" action="{{path('admin.meetingroom.delete', {'id':meetingroom.id})}}">
+
+								<input type="hidden" name="csrf_token" value="{{csrf_token('delete_meetingroom_'~meetingroom.id)}}">
+								<input type="hidden" name="_method" value="delete">
+							</form>
+
+						</div>
+
+
+						<p class="card-text d-flex justify-content-between mt-3">
+							<small class="text-body-secondary">Créer
+								{{meetingroom.createdAt|ago}}</small>
+
+							<small class="text-body-secondary">Modifié
+								{{meetingroom.updatedAt|ago}}</small>
+						</p>
+
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+		{# display navigation
+																																																																																																																																																																																																																																																																																																																																																										<div class="mt-2 d-flex justify-content-center">
+																																																																																																																																																																																																																																																																																																																																																											{{ knp_pagination_render(agencies) }}
+																																																																																																																																																																																																																																																																																																																																																										</div> #}
+	</div>
 {% endblock %}

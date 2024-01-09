@@ -56,9 +56,25 @@ class Search
     #[ORM\ManyToMany(targetEntity: MeetingRoom::class, inversedBy: 'searches')]
     private Collection $meetingroom;
 
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'La Localisation ne doit pas dépasser {{ limit }} caractères.',
+    )]
+    #[Assert\Regex(
+        pattern: "/^[0-9a-zA-Z-_' áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$/i",
+        match: true,
+        message: 'Le nom doit contenir uniquement des lettres, des chiffres, le tiret du milieu et l\'undescore.',
+    )]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $name = null;
+
+    #[ORM\ManyToMany(targetEntity: Equipment::class, inversedBy: 'searches')]
+    private Collection $equipments;
+
     public function __construct()
     {
         $this->meetingroom = new ArrayCollection();
+        $this->equipments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -170,6 +186,42 @@ class Search
     public function removeMeetingroom(MeetingRoom $meetingroom): static
     {
         $this->meetingroom->removeElement($meetingroom);
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Equipment>
+     */
+    public function getEquipments(): Collection
+    {
+        return $this->equipments;
+    }
+
+    public function addEquipment(Equipment $equipment): static
+    {
+        if (!$this->equipments->contains($equipment)) {
+            $this->equipments->add($equipment);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipment(Equipment $equipment): static
+    {
+        $this->equipments->removeElement($equipment);
 
         return $this;
     }

@@ -6,6 +6,21 @@
 
 {% block main %}
 
+	<!-- Breadcrumb-->
+	<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class='mx-1 my-4'>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a href="{{path('admin.home.dashboard')}}">Tableau de bord</a>
+			</li>
+			<li class="breadcrumb-item">
+				<a href="{{path('admin.equipments.index')}}">Liste des equipements</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">Modification d'un equipement</li>
+		</ol>
+	</nav>
+	<!-- Fin Breadcrumb-->
+
+
 	<h1 class="text-center my-3 display-5">Modification d'un Equipement</h1>
 
 	<div class="container mt-5">

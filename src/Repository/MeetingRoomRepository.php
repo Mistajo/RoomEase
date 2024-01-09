@@ -55,19 +55,32 @@ class MeetingRoomRepository extends ServiceEntityRepository
      */
     public function search(Search $search): array
     {
-        $qb = $this->createQueryBuilder('r');
+        $qb = $this->createQueryBuilder('r')
+            ->select('r', 'e')
+            ->join('r.equipment', 'e');
         // ->andWhere('r.location LIKE :location')
         // ->setParameter('location', '%' . $search->getLocation() . '%');
+
 
         if ($search->getMinCapacity()) {
             $qb->andWhere('r.Capacity >= :minCapacity')
                 ->setParameter('minCapacity', $search->getMinCapacity());
         }
 
+        if (!empty($search->getName())) {
+            $qb->andWhere('r.name LIKE :name')
+                ->setParameter('name', "%{$search->getName()}%");
+        }
+
         if ($search->getMaxCapacity()) {
             $qb->andWhere('r.Capacity <= :maxCapacity')
                 ->setParameter('maxCapacity', $search->getMaxCapacity());
         }
+
+        // if (!empty($search->getEquipments())) {
+        //     $qb->andWhere('e.id IN (:equipments)')
+        //         ->setParameter('equipments', $search->getEquipments());
+        // }
 
         if ($search->getMinPrice()) {
             $qb->andWhere('r.minprice >= :minPrice')

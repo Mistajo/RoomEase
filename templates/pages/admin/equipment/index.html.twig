@@ -7,6 +7,19 @@
 {% block main %}
 	<div
 		class="container my-2">
+
+		<!-- Breadcrumb-->
+		<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class='mx-1 my-4'>
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item">
+					<a href="{{path('admin.home.dashboard')}}">Tableau de bord</a>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">Liste des salles</li>
+			</ol>
+		</nav>
+		<!-- Fin Breadcrumb-->
+
+
 		<!-- Titre de la page -->
 		<h1 class=' text-secondary text-center my-3 display-5'>Liste Des Equipements</h1>
 		<!-- Fin Titre de la page -->
