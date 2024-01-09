@@ -1,0 +1,84 @@
+{% extends 'themes/base_admin.html.twig' %}
+
+{% block title %}
+	- Reservation salle de réunion - Espace Admin - Modification des Salles
+{% endblock %}
+
+{% block main %}
+
+	<nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a href="{{path('admin.meetingroom.index')}}">Retour</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">{{meetingroom.name|u.truncate('50','...')}}</li>
+		</ol>
+	</nav>
+
+	<!-- Titre de la page -->
+	<h1 class=' text-secondary text-center my-3 display-5'>Modification Salle</h1>
+	<!-- Fin Titre de la page -->
+
+	<!-- Formulaire de creation de salle -->
+	<div class="container d-flex justify-content-center align-items-center my-5 py-5">
+
+		<div
+			class="row">
+
+			<!-- Nom -->
+			{{ form_start(form) }}
+			<div class="mb-3">
+				<label for="">Nom :</label>
+				<div class="text-danger">{{form_errors(form.name)}}</div>
+				{{form_widget(form.name, {'attr': {'class': 'form-control'}})}}
+			</div>
+			<!-- Fin Nom -->
+
+			<!-- Capacité -->
+			<div class="mb-3">
+				<label for="">Capacité :</label>
+				<div class="text-danger">{{form_errors(form.Capacity)}}</div>
+				{{form_widget(form.Capacity, {'attr': {'class': 'form-control'}})}}
+			</div>
+			<!-- Fin Capacité -->
+
+			<!-- Description -->
+			<div class="mb-3">
+				<label for="">Description :</label>
+				<div class="text-danger">{{form_errors(form.Description)}}</div>
+				{{form_widget(form.Description, {'attr': {'class': 'form-control'}})}}
+			</div>
+			<!-- Fin Description -->
+
+			<!-- Equipements -->
+			<div class="mb-3">
+				<label for="">Equipements :</label>
+				<div class="text-danger">{{form_errors(form.equipments)}}</div>
+				{{form_widget(form.equipments, {'attr': {'class': 'form-control'}})}}
+			</div>
+			<!-- Fin Equipements -->
+
+
+			<!-- Image -->
+			<div class="mb-3">
+				<label for="">Image</label>
+				<div class="text-danger">{{form_errors(form.imageFile)}}</div>
+				{{form_widget(form.imageFile, {'attr': {'class': 'form-control'}})}}
+			</div>
+			<!-- Fin Image -->
+
+			<!-- Bouton de creation -->
+			<div class="mb-3">
+				<input formnovalidate type="submit" class="btn btn-primary" value="Modifier">
+			</div>
+			<!-- Fin Bouton de creation -->
+
+			{{ form_end(form) }}
+		</div>
+		<!-- Fin Formulaire de creation de salle -->
+
+
+	</div>
+
+
+{% endblock %}

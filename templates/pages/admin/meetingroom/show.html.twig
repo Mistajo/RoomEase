@@ -1,0 +1,48 @@
+{% extends 'themes/base_admin.html.twig' %}
+
+{% block title %}
+	- Reservation salle de réunion - Espace Admin - Détail de la
+	{{meetingroom.name}}
+{% endblock %}
+
+{% block main %}
+
+	<nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+		<ol class="breadcrumb mx-3 mt-3">
+			<li class="breadcrumb-item">
+				<a href="{{path('admin.home.dashboard')}}">Espace Admin</a>
+
+			</li>
+			<li class="breadcrumb-item">
+				<a href="{{path('admin.meetingroom.index')}}">Toutes les salles</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">{{meetingroom.name|u.truncate('50','...')}}</li>
+		</ol>
+	</nav>
+
+	<!-- Titre de la page -->
+	<h1 class=' text-secondary text-center my-3 display-5'>Détail de la
+		{{meetingroom.name}}</h1>
+	<!-- Fin Titre de la page -->
+
+
+	<div class="container mt-5 text-center ">
+		{% if meetingroom.image %}
+			<img src="{{ vich_uploader_asset(meetingroom, 'imageFile') }}" alt="{{ meetingroom.name }}" class='h-50 w-50'>
+		{% else %}
+			<img src="{{asset('images/NoImage/No_Image.jpg')}}" alt="{{ meetingroom.description|striptags|u.truncate(30, '...')}}" class="h-50 w-50">
+		{% endif %}
+
+		<p>
+			Capacité :
+			{{ meetingroom.Capacity}}
+			Personnes</p>
+		{% if meetingroom.description is not empty %}
+			<p class="card-text">Description :
+				{{ meetingroom.description }}
+			</p>
+		{% endif %}
+		<p class="card-text">Equipements :
+			{{ meetingroom.equipments }}</p>
+	</p>
+</div>{% endblock %}

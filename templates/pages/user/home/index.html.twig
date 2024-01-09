@@ -1,0 +1,54 @@
+{% extends 'themes/base_user.html.twig' %}
+
+{% block title %}
+	- Reservation salle de réunion - Espace Utilisateur
+{% endblock %}
+
+{% block main %}
+
+	<h1 class=' text-secondary text-center my-3 display-5'>Bienvenue</h1>
+	<div class="container">
+		<div class="row">
+			{% for meetingroom in meetingrooms %}
+				<div class="col-md-6 mb-4 d-flex justify-content-center">
+					<div class="card mb-3 border shadow w-75 h-100">
+						<a href="#">
+							{% if meetingroom.image %}
+								<img src="{{ vich_uploader_asset(meetingroom, 'imageFile') }}" alt="{{ meetingroom.name }}" class='card-img-top img-fluid'>
+							{% else %}
+								<img src="{{asset('images/NoImage/No_Image.jpg')}}" alt="{{ meetingroom.description|striptags|u.truncate(30, '...')}}" class="card-img-top img-fluid">
+
+
+							{% endif %}
+						</a>
+						<div class="card-body">
+							<h5 class="card-title">Nom de la salle :
+								<strong>
+									{{meetingroom.name}}
+								</strong>
+							</h5>
+							<p class="card-text">Capacité :
+								{{ meetingroom.Capacity }}
+								Personnes</p>
+							{% if meetingroom.description is not empty %}
+								<p class="card-text">Description :
+									{{ meetingroom.description|striptags|u.truncate(70, '...')|raw }}
+								</p>
+							{% endif %}
+
+							<p class="card-text">Equipements :
+								{{ meetingroom.equipments|striptags|u.truncate(70, '...')|raw }}
+							</p>
+
+							<p>
+								<a href="{{path('user.meetingroom.show', {'id' : meetingroom.id})}}" class="btn btn-secondary">Voir Plus</a>
+
+							</p>
+
+						</div>
+					</div>
+
+				</div>
+			{% endfor %}
+		</div>
+	{% endblock %}

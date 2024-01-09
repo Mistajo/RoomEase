@@ -3,14 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\MeetingRoomRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: MeetingRoomRepository::class)]
+#[UniqueEntity(fields: ['name'], message: 'Ce nom se salle existe déja')]
 #[Vich\Uploadable]
 class MeetingRoom
 {
@@ -29,7 +33,7 @@ class MeetingRoom
         match: true,
         message: 'Le nom doit contenir uniquement des lettres, des chiffres le tiret du milieu de l\'undescore.',
     )]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
@@ -69,9 +73,17 @@ class MeetingRoom
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\ManyToMany(targetEntity: Search::class, mappedBy: 'meetingroom')]
+    private Collection $searches;
+
+    #[ORM\OneToMany(mappedBy: 'meetingroom', targetEntity: Reservation::class)]
+    private Collection $reservations;
+
     public function __construct()
     {
         $this->isAvailable = true;
+        $this->searches = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -197,6 +209,63 @@ class MeetingRoom
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Search>
+     */
+    public function getSearches(): Collection
+    {
+        return $this->searches;
+    }
+
+    public function addSearch(Search $search): static
+    {
+        if (!$this->searches->contains($search)) {
+            $this->searches->add($search);
+            $search->addMeetingroom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSearch(Search $search): static
+    {
+        if ($this->searches->removeElement($search)) {
+            $search->removeMeetingroom($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setMeetingroom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getMeetingroom() === $this) {
+                $reservation->setMeetingroom(null);
+            }
+        }
 
         return $this;
     }

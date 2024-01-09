@@ -1,0 +1,36 @@
+{% set currentYear = "now"|date("Y") %}
+{% set startYear = 2023 %}
+{% set copyrightYears = startYear ~ (currentYear != startYear ? (' - ' ~ currentYear) : '') %}
+
+
+<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top  bg-info-subtle shadow">
+	<p class="col-md-4 mb-0">&copy;
+		{{ copyrightYears }}
+		Copyright :
+		<a href="https://joan-ngam-developpeur-web.fr/">Joan NGAM</a</p>
+	</p>
+
+	<a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+		<img src="{{asset('favicon/favicon-32x32.png')}}" class=" img-fluid" alt="RoomEase Logo">
+	</a>
+
+	<ul class="nav col-md-4 justify-content-between">
+		<li class="nav-item">
+			<a href="#" class="nav-link px-2 text-black-50">Accueil</a>
+		</li>
+		<li class="nav-item">
+			<a href="#" class="nav-link px-2 text-black-50">A Propos</a>
+		</li>
+		<li class="nav-item">
+			<a href="#" class="nav-link px-2 text-black-50">Contact</a>
+		</li>
+		<li class="nav-item">
+			<a href="#" class="nav-link px-2 text-black-50">Les Conditions générales de vente</a>
+		</li>
+		<li class="nav-item">
+			<a href="#" class="nav-link px-2 text-black-50">Règlement Général sur la Protection des Données</a>
+
+
+		</li>
+	</ul>
+</footer>

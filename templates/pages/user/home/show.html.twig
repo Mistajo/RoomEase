@@ -1,0 +1,64 @@
+{% extends 'themes/base_admin.html.twig' %}
+
+{% block title %}
+	- Reservation salle de réunion - Espace User - Détail de la
+	{{meetingroom.name}}
+{% endblock %}
+
+{% block main %}
+
+	<nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+		<ol class="breadcrumb mx-3 mt-3">
+			<li class="breadcrumb-item">
+				<a href="{{path('user.home.index')}}">Espace Utilisateur</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">{{meetingroom.name|u.truncate('50','...')}}</li>
+		</ol>
+	</nav>
+
+	<!-- Titre de la page -->
+	<h1 class=' text-secondary text-center my-3 display-5'>Détail de la
+		{{meetingroom.name}}</h1>
+	<!-- Fin Titre de la page -->
+
+
+	<div class="container mt-5 text-center ">
+		{% if meetingroom.image %}
+			<img src="{{ vich_uploader_asset(meetingroom, 'imageFile') }}" alt="{{ meetingroom.name }}" class='h-50 w-50'>
+		{% else %}
+			<img src="{{asset('images/NoImage/No_Image.jpg')}}" alt="{{ meetingroom.description|striptags|u.truncate(30, '...')}}" class="h-50 w-50">
+		{% endif %}
+
+		<p>
+			Capacité :
+			{{ meetingroom.Capacity}}
+			Personnes</p>
+		{% if meetingroom.description is not empty %}
+			<p class="card-text">Description :
+				{{ meetingroom.description }}
+			</p>
+		{% endif %}
+		<p class="card-text">Equipements :
+			{{ meetingroom.equipments }}</p>
+
+		<div class="col-md-6 mx-auto" id="calendar"></div>
+
+
+	</div>
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+
+	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+var calendarEl = document.getElementById('calendar');
+var calendar = new FullCalendar.Calendar(calendarEl, {
+initialView: 'timeGridWeek',
+events: '{{ path('user.meetingroom.events', { id: meetingroom.id }) }}'
+});
+calendar.render();
+});
+	</script>
+{% endblock %}
