@@ -5,7 +5,86 @@
 {% endblock %}
 
 {% block main %}
+	<div
+		class="container my-2">
+		<!-- Titre de la page -->
+		<h1 class=' text-secondary text-center my-3 display-5'>Liste Des Equipements</h1>
+		<!-- Fin Titre de la page -->
 
-	<h1 class=' text-secondary text-center my-3 display-5'>Liste des Equipements</h1>
 
-{% endblock %}
+		<!--Alerte Flash-->
+		<div class="col-md-6 mx-auto">
+			{% for message in app.flashes('success') %}
+				<div class="text-center alert alert-success alert-dismissible fade show" role="alert">
+					{{message}}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			{% endfor %}
+
+			{% for message in app.flashes('warning') %}
+				<div class="text-center alert alert-warning alert-dismissible fade show" role="alert">
+					{{message}}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			{% endfor %}
+		</div>
+
+		<!--Fin Alerte Flash-->
+
+		<div
+			class="row">
+			<!-- Card Creation nouveau equipement-->
+			<div class="col-md-4 my-2 gap-1 radius shadow">
+				<a class=" text-decoration-none" href="{{path('admin.equipments.create')}}">
+					<div class="card mb-3">
+						<div class="card-body text-center">
+							<i class="fa-solid fa-plus text-center-black mt-5"></i>
+							<h5 class="card-title text-center-black  ">Créer un equipement</h5>
+						</div>
+					</div>
+				</a>
+			</div>
+			<!-- Fin Card Creation nouveau equipement-->
+
+
+			<!-- Card Pour les nouveaux equipements -->
+
+			{% for equipment in equipments %}
+				<div class="col-md-4 my-2 gap-1 radius shadow">
+					<div class="card mb-3">
+						<div class="card-body text-center">
+							<h5 class="card-title">
+								<strong>
+									{{equipment.name}}
+								</strong>
+							</h5>
+							<!-- Boutton  -->
+							<div class="d-flex justify-content-between align-items-center gap-1">
+								<a href="{{path('admin.equipments.edit', {'id' : equipment.id})}}" class="btn btn-secondary">Modifier</a>
+								<a href="#" class="btn btn-danger ms-auto" onclick="event.preventDefault(); return confirm('Voulez vous vraiment supprimer cet equipement?') && document.querySelector('#form_delete_equipment_{{equipment.id}}').submit()" title="Supprimer">Supprimer</a>
+								<form method="POST" id="form_delete_equipment_{{equipment.id}}" action="{{path('admin.equipments.delete', {'id': equipment.id})}}">
+									<input type="hidden" name="csrf_token" value="{{csrf_token('delete_equipment_'~equipment.id)}}">
+									<input type="hidden" name="_method" value="delete">
+								</form>
+							</div>
+							<!-- Fin boutton -->
+
+							<p class="card-text d-flex justify-content-between">
+								<small class="text-body-secondary">Créer
+									{{equipment.createdAt|ago}}</small>
+
+								<small class="text-body-secondary">Modifié
+									{{equipment.updatedAt|ago}}</small>
+							</p>
+
+						</div>
+					</div>
+				</div>
+
+
+			{% endfor %}
+			<!-- Fin Card pour les nouvelles categories -->
+		</div>
+
+
+	{% endblock %}

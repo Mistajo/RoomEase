@@ -2,16 +2,80 @@
 
 namespace App\Controller\Admin\Equipment;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Equipment;
+use App\Entity\Equipments;
+use App\Entity\MeetingRoom;
+use App\Form\EquipmentFormType;
+use App\Form\MeetingRoomFormType;
+use App\Repository\EquipmentRepository;
+use App\Repository\EquipmentsRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/admin')]
 class EquipmentController extends AbstractController
 {
     #[Route('/equipments/list', name: 'admin.equipments.index')]
-    public function index(): Response
+    public function index(EquipmentRepository $equipmentRepository): Response
     {
-        return $this->render('pages/admin/equipment/index.html.twig');
+        return $this->render('pages/admin/equipment/index.html.twig', [
+            'equipments' => $equipmentRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/equipments/create', name: 'admin.equipments.create', methods: ['GET', 'POST'])]
+    public function create(Request $request, EntityManagerInterface $em): Response
+    {
+        $equipment = new Equipment();
+        $form = $this->createForm(EquipmentFormType::class, $equipment);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($equipment);
+            $em->flush();
+            $this->addFlash('success', "L'equipement a été ajouté avec succès.");
+            return $this->redirectToRoute('admin.equipments.index');
+        }
+        return $this->render("pages/admin/equipment/create.html.twig", [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/equipments/{id}/edit', name: 'admin.equipments.edit', methods: ['GET', 'PUT'])]
+    public function edit(Equipment $equipment, Request $request, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(EquipmentFormType::class, $equipment, [
+            "method" => "PUT"
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($equipment);
+            $em->flush();
+
+            $this->addFlash("success", "L'equipement a été modifié avec succès.");
+            return $this->redirectToRoute('admin.equipments.index');
+        }
+
+        return $this->render("pages/admin/equipment/edit.html.twig", [
+            "form" => $form->createView(),
+            'equipment' => $equipment,
+        ]);
+    }
+
+    #[Route('/equipments/{id}/delete', name: 'admin.equipments.delete', methods: ['DELETE'])]
+    public function delete(Equipment $equipment, Request $request, EntityManagerInterface $em): Response
+    {
+        if ($this->isCsrfTokenValid("delete_equipment_" . $equipment->getId(), $request->request->get('csrf_token'))) {
+            $em->remove($equipment);
+            $em->flush();
+
+            $this->addFlash("success", "Cet equipement a été supprimé.");
+        }
+
+        return $this->redirectToRoute('admin.equipments.index');
     }
 }

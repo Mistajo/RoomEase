@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin\Meeting_Room;
+namespace App\Controller\Admin\MeetingRoom;
 
 use App\Entity\Search;
 use App\Entity\MeetingRoom;
@@ -85,24 +85,5 @@ class MeetingRoomController extends AbstractController
         }
 
         return $this->redirectToRoute('admin.meetingroom.index');
-    }
-
-    #[Route('/meetingroom/search', name: 'admin.meetingroom.search', methods: ['GET', 'POST'])]
-    public function search(Request $request, MeetingRoomRepository $meetingRoomRepository, EntityManagerInterface $em): Response
-    {
-        $search = new Search();
-        $form = $this->createForm(SearchFormType::class, $search);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $meetingRooms = $meetingRoomRepository->search($search);
-        } else {
-            $meetingRooms = $meetingRoomRepository->findAll();
-        }
-
-        return $this->render("pages/admin/meetingroom/search.html.twig", [
-            'form' => $form->createView(),
-            'meetingRooms' => $meetingRooms,
-        ]);
     }
 }

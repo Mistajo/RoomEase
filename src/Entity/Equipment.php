@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\EquipmentsRepository;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\Mapping\Annotation as Gedmo;
 
-#[ORM\Entity(repositoryClass: EquipmentsRepository::class)]
-class Equipments
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use App\Repository\EquipmentRepository;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+#[ORM\Entity(repositoryClass: EquipmentRepository::class)]
+#[UniqueEntity(fields: ['name'], message: 'Impossible de créer un equipement avec ce nom.')]
+class Equipment
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -25,7 +28,7 @@ class Equipments
         match: true,
         message: 'Le nom doit contenir uniquement des lettres, des chiffres le tiret du milieu de l\'undescore.',
     )]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
