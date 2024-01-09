@@ -46,13 +46,6 @@ class MeetingRoom
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $Description = null;
 
-    #[Assert\NotBlank(message: "La liste des equipements est obligatoire.")]
-    #[Assert\Length(
-        max: 1000,
-        maxMessage: 'La liste des equipements ne doit pas dépasser {{ limit }} caractères.',
-    )]
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $equipments = null;
 
     #[Assert\File(
         maxSize: '4096k',
@@ -122,17 +115,6 @@ class MeetingRoom
         return $this;
     }
 
-    public function getEquipments(): ?string
-    {
-        return $this->equipments;
-    }
-
-    public function setEquipments(string $equipments): static
-    {
-        $this->equipments = $equipments;
-
-        return $this;
-    }
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance

@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/admin')]
 class MeetingRoomController extends AbstractController
 {
-    #[Route('/meeting_room/list', name: 'admin.meeting_room.index')]
+    #[Route('/meeting_room/list', name: 'admin.meetingroom.index')]
     public function index(MeetingRoomRepository $meetingRoomRepository): Response
     {
         $meetingrooms = $meetingRoomRepository->findAll();
@@ -23,7 +23,7 @@ class MeetingRoomController extends AbstractController
         ]);
     }
 
-    #[Route('/MeetingRoom/create', name: 'admin.meeting_room.create', methods: ['GET', 'POST'])]
+    #[Route('/MeetingRoom/create', name: 'admin.meetingroom.create', methods: ['GET', 'POST'])]
     public function create(Request $request, EntityManagerInterface $em): Response
     {
 

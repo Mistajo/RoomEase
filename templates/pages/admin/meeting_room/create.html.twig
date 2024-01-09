@@ -41,18 +41,17 @@
 			</div>
 			<!-- Fin Description -->
 
-			<!-- Equipements -->
-			<div class="mb-3">
-				<label for="">Equipements :</label>
-				<div class="text-danger">{{form_errors(form.equipments)}}</div>
-				{{form_widget(form.equipments, {'attr': {'class': 'form-control'}})}}
-			</div>
-			<!-- Fin Equipements -->
+			{# <!-- Equipements -->
+						<div class="mb-3">
+							<label for="">Equipements :</label>
+							<div class="text-danger">{{form_errors(form.equipments)}}</div>
+							{{form_widget(form.equipments, {'attr': {'class': 'form-control'}})}}
+						</div>
+						<!-- Fin Equipements --> #}
 
 
 			<!-- Image -->
-			<div class="mb-3">
-				<label for="">Image</label>
+				<div class="mb-3"> <label for="">Image</label>
 				<div class="text-danger">{{form_errors(form.imageFile)}}</div>
 				{{form_widget(form.imageFile, {'attr': {'class': 'form-control'}})}}
 			</div>

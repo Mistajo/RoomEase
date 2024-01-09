@@ -37,7 +37,7 @@
 
 			<!-- Card Creation nouvelle salle-->
 			<div class="col-md-4 my-2 radius">
-				<a class=" text-decoration-none" href="{{path('admin.meeting_room.create')}}">
+				<a class=" text-decoration-none" href="{{path('admin.meetingroom.create')}}">
 					<div class="card mb-3">
 						<div class="card-body text-center">
 							<i class="fa-solid fa-plus text-center-black mt-5"></i>
@@ -77,12 +77,11 @@
 									{{meetingroom.description|u.truncate(70, '...')}}
 								{% endif %}
 							</p>
-							<p class="card-text">
-								<br>
-								Description :
-								{{meetingroom.equipments|u.truncate(70, '...')}}
-							</p>
-
+							{# <p class="card-text">
+																						<br>
+																						Equipements :
+																						{{meetingroom.equipments|u.truncate(70, '...')}}
+																					</p> #}
 
 							<!-- Boutton  -->
 							<div class="d-flex justify-content-center align-items-center mx-2 my-2">

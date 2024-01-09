@@ -19,7 +19,6 @@ class MeetingRoomFormType extends AbstractType
             ->add('name', TextType::class)
             ->add('Capacity', NumberType::class)
             ->add('Description', TextareaType::class)
-            ->add('equipments', TextareaType::class)
             ->add('imageFile', VichImageType::class, [
                 'required' => false,
                 'allow_delete' => true,
