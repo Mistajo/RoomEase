@@ -109,89 +109,90 @@
 
 		</div>
 		{{ form_end(form) }}
-	</div>
-
-	<div
-		class="row">
-		<!-- Card Creation nouvelle salle-->
-		<div class="d-flex justify-content-end align-items-center mx-3 my-3">
-			<a class="btn btn-secondary" href="{{path('admin.meetingroom.create')}}">
-				<i class="fa-solid fa-plus shadow"></i>
-				Nouvelle Salle</a>
-		</div>
-		<!-- Fin Card Creation nouvelle salle-->
 
 
-		{% for meetingroom in meetingrooms %}
-			<div class="col-md-4 mb-4 d-flex justify-content-center">
-				<div class="card mb-3 border shadow w-75 h-100">
-					<a href="#">
-						{% if meetingroom.image %}
-							<img src="{{ vich_uploader_asset(meetingroom, 'imageFile') }}" alt="{{ meetingroom.name }}" class='card-img-top img-fluid'>
-						{% else %}
-							<img src="{{asset('images/NoImage/No_Image.jpg')}}" alt="{{ meetingroom.description|striptags|u.truncate(30, '...')}}" class="card-img-top img-fluid">
+		<div
+			class="row">
+			<!-- Card Creation nouvelle salle-->
+			<div class="d-flex justify-content-end align-items-center mx-3 my-3">
+				<a class="btn btn-secondary" href="{{path('admin.meetingroom.create')}}">
+					<i class="fa-solid fa-plus shadow"></i>
+					Nouvelle Salle</a>
+			</div>
+			<!-- Fin Card Creation nouvelle salle-->
 
 
-						{% endif %}
-					</a>
-					<div class="card-body">
-						<h5 class="card-title">Nom de la salle :
-							<strong>
-								{{meetingroom.name}}
-							</strong>
-						</h5>
-						<li>
-							Capacité :
-							{{ meetingroom.Capacity }}
-							Personnes
-						</li>
-						{% if meetingroom.description is not empty %}
-							<p class="card-text">Description :
-								{{ meetingroom.description|striptags|u.truncate(70, '...')|raw }}
-							</p>
-						{% endif %}
-
-						<li>
-							Equipements :
-							{% if meetingroom.equipment is empty %}
-								<p>---</p>
+			{% for meetingroom in meetingrooms %}
+				<div class="col-md-4 mb-4 d-flex justify-content-center">
+					<div class="card mb-3 border shadow w-75 h-100">
+						<a href="#">
+							{% if meetingroom.image %}
+								<img src="{{ vich_uploader_asset(meetingroom, 'imageFile') }}" alt="{{ meetingroom.name }}" class='card-img-top img-fluid'>
 							{% else %}
-								{% for equipment in meetingroom.equipment %}
-									<span class="badge text-bg-primary">{{equipment.name}}</span>
-								{% endfor %}
+								<img src="{{asset('images/NoImage/No_Image.jpg')}}" alt="{{ meetingroom.description|striptags|u.truncate(30, '...')}}" class="card-img-top img-fluid">
+
+
 							{% endif %}
-						</li>
+						</a>
+						<div class="card-body">
+							<h5 class="card-title">Nom de la salle :
+								<strong>
+									{{meetingroom.name}}
+								</strong>
+							</h5>
+							<li>
+								Capacité :
+								{{ meetingroom.Capacity }}
+								Personnes
+							</li>
+							{% if meetingroom.description is not empty %}
+								<p class="card-text">Description :
+									{{ meetingroom.description|striptags|u.truncate(70, '...')|raw }}
+								</p>
+							{% endif %}
 
-						<div class="d-flex justify-content-between align-items-center gap-1 mt-2">
-							<a href="{{path('admin.meetingroom.edit', {'id': meetingroom.id})}}" class="btn btn-primary">Modifier</a>
+							<li>
+								Equipements :
+								{% if meetingroom.equipment is empty %}
+									<p>---</p>
+								{% else %}
+									{% for equipment in meetingroom.equipment %}
+										<span class="badge text-bg-primary">{{equipment.name}}</span>
+									{% endfor %}
+								{% endif %}
+							</li>
 
-							<a href="{{path('admin.meetingroom.show', {'id' : meetingroom.id})}}" class="btn btn-secondary">Voir Plus</a>
+							<p class="d-flex justify-content-between align-items-center gap-2 my-2">
+								<a href="{{path('admin.meetingroom.edit', {'id': meetingroom.id})}}" class="btn btn-primary">Modifier</a>
 
-							<a href="#" class="btn btn-danger" onclick="event.preventDefault(); return confirm('Voulez vous vraiment supprimer cette salle?') && document.querySelector('#form_delete_meetingroom_{{meetingroom.id}}').submit()" title="Supprimer">Supprimer</a>
-							<form method="POST" id="form_delete_meetingroom_{{meetingroom.id}}" action="{{path('admin.meetingroom.delete', {'id':meetingroom.id})}}">
+								<a href="{{path('admin.meetingroom.show', {'id' : meetingroom.id})}}" class="btn btn-secondary">Voir Plus</a>
 
-								<input type="hidden" name="csrf_token" value="{{csrf_token('delete_meetingroom_'~meetingroom.id)}}">
-								<input type="hidden" name="_method" value="delete">
-							</form>
+								<a href="#" class="btn btn-danger" onclick="event.preventDefault(); return confirm('Voulez vous vraiment supprimer cette salle?') && document.querySelector('#form_delete_meetingroom_{{meetingroom.id}}').submit()" title="Supprimer">Supprimer</a>
+								<form method="POST" id="form_delete_meetingroom_{{meetingroom.id}}" action="{{path('admin.meetingroom.delete', {'id':meetingroom.id})}}">
+
+									<input type="hidden" name="csrf_token" value="{{csrf_token('delete_meetingroom_'~meetingroom.id)}}">
+									<input type="hidden" name="_method" value="delete">
+								</form>
+
+							</p>
+
+
+							<p class="card-text d-flex justify-content-between mt-3">
+								<small class="text-body-secondary">Créer
+									{{meetingroom.createdAt|ago}}</small>
+
+								<small class="text-body-secondary">Modifié
+									{{meetingroom.updatedAt|ago}}</small>
+							</p>
 
 						</div>
-
-
-						<p class="card-text d-flex justify-content-between mt-3">
-							<small class="text-body-secondary">Créer
-								{{meetingroom.createdAt|ago}}</small>
-
-							<small class="text-body-secondary">Modifié
-								{{meetingroom.updatedAt|ago}}</small>
-						</p>
-
 					</div>
 				</div>
-			</div>
-		{% endfor %}
-		{# display navigation
-																																																																																																																																																																																																																																																																																																																																																										<div class="mt-2 d-flex justify-content-center">
-																																																																																																																																																																																																																																																																																																																																																											{{ knp_pagination_render(agencies) }}
-																																																																																																																																																																																																																																																																																																																																																										</div> #}
+			{% endfor %}
+			{# display navigation
+																																																																																																																																																																																																																																																																																																																																																																																				<div class="mt-2 d-flex justify-content-center">
+																																																																																																																																																																																																																																																																																																																																																																																					{{ knp_pagination_render(agencies) }}
+																																																																																																																																																																																																																																																																																																																																																																																				</div> #}
+		</div>
 	</div>
 {% endblock %}

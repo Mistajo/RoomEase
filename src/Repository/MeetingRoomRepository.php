@@ -77,10 +77,11 @@ class MeetingRoomRepository extends ServiceEntityRepository
                 ->setParameter('maxCapacity', $search->getMaxCapacity());
         }
 
-        // if (!empty($search->getEquipments())) {
-        //     $qb->andWhere('e.id IN (:equipments)')
+        // if ($search->getEquipments()) {
+        //     $qb->leftJoin('r.equipment', 'e', 'WITH', 'e.id IN (:equipments)')
         //         ->setParameter('equipments', $search->getEquipments());
         // }
+
 
         if ($search->getMinPrice()) {
             $qb->andWhere('r.minprice >= :minPrice')

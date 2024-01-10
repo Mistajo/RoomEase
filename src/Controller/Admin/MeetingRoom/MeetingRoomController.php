@@ -23,6 +23,7 @@ class MeetingRoomController extends AbstractController
         $search = new Search();
         $form = $this->createForm(SearchFormType::class, $search);
         $form->handleRequest($request);
+
         $meetingrooms = $meetingRoomRepository->Search($search);
 
         return $this->render('pages/admin/meetingroom/index.html.twig', [

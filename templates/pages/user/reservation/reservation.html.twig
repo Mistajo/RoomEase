@@ -1,0 +1,138 @@
+{% extends 'themes/base_user.html.twig' %}
+
+{% block title %}
+	- Espace Utilisateur - Rseservation salle
+{% endblock %}
+
+{% block main %}
+
+	<nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+		<ol class="breadcrumb mx-3 my-3">
+			<li class="breadcrumb-item">
+				<a href="{{path('user.home.index')}}">Liste des Salles</a>
+			</li>
+			<li class="breadcrumb-item">
+				<a href="{{path('user.meetingroom.show', {'id' : meetingroom.id})}}">Détails
+					{{meetingroom.name|u.truncate('50','...')}}</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">Reservation
+				{{meetingroom.name|u.truncate('50','...')}}</li>
+		</ol>
+	</nav>
+
+
+	<h1 class=' text-secondary text-center my-3 display-5'>Reservation salle</h1>
+
+	<!--Alerte Flash-->
+	<div class="col-md-6 mx-auto">
+		{% for message in app.flashes('error') %}
+			<div class="text-center alert alert-danger alert-dismissible fade show" role="alert">
+				{{message}}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		{% endfor %}
+
+		{% for message in app.flashes('warning') %}
+			<div class="text-center alert alert-warning alert-dismissible fade show" role="alert">
+				{{message}}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		{% endfor %}
+	</div>
+	<!--Fin Alerte Flash-->
+
+
+	<div class="container">
+
+		<div class="col-md-12 text-center">
+			<h1>{{ meetingroom.name }}</h1>
+
+		</div>
+		<div class='text-center mb-2'>
+			{% if meetingroom.image %}
+				<img src="{{ vich_uploader_asset(meetingroom, 'imageFile') }}" alt="{{ meetingroom.name }}" class='h-50 w-50'>
+			{% else %}
+				<img src="{{asset('images/NoImage/No_Image.jpg')}}" alt="{{ meetingroom.description|striptags|u.truncate(30, '...')}}" class="h-50 w-50">
+			{% endif %}
+
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				{{ form_start(form) }}
+				<div class="row">
+					<div class="col-md-12 text-center">
+						{{ form_start(form) }}
+						<div class="mb-3">
+							<label for="">Date de Debut :</label>
+							<div class="text-danger">{{form_errors(form.startDate)}}</div>
+							{{form_widget(form.startDate,)}}
+						</div>
+						<div class="mb-3">
+							<label for="">Date de Fin :</label>
+							<div class="text-danger">{{form_errors(form.endDate)}}</div>
+							{{form_widget(form.endDate,)}}
+						</div>
+
+						<div class="mb-3">
+							<label for="">Titre de la Reservation :</label>
+							<div class="text-danger">{{form_errors(form.title)}}</div>
+							{{form_widget(form.title,)}}
+						</div>
+
+						<div class="mb-3">
+							<input formnovalidate type="submit" class="btn btn-primary" value="Réserver">
+						</div>
+
+
+						{{ form_end(form) }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div id="calendar"></div>
+					</div>
+				</div>
+
+
+			</div>
+		{% endblock %}
+
+		{% block javascripts %}
+			{{ parent() }}
+
+			<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+			<script src='fullcalendar/core/index.global.js'></script>
+			<script src='fullcalendar/core/locales-all.global.js'></script>
+
+			<script>
+				document.addEventListener('DOMContentLoaded', function () {
+var calendarEl = document.getElementById('calendar');
+
+var calendar = new FullCalendar.Calendar(calendarEl, {
+initialView: 'timeGridWeek',
+weekends: false,
+events: '{{ path('user.meetingroom.events', { id: meetingroom.id }) }}',
+eventColor: 'red',
+headerToolbar: {
+left: 'prev,next today',
+center: 'title',
+right: 'timeGridDay,timeGridWeek,dayGridMonth'
+
+
+},
+locale: 'fr',
+slotMinTime: '07:00:00',
+slotMaxTime: '22:00:00',
+slotDuration: '00:30:00',
+allDaySlot: false,
+selectable: false,
+select: function (info) {
+document.getElementById('reservation_form_startDate').value = info.startStr;
+document.getElementById('reservation_form_endDate').value = info.endStr;
+}
+});
+calendar.render();
+});
+			</script>
+		{% endblock %}

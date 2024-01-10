@@ -23,6 +23,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "fullcalendar": "^6.1.10"
+        "fullcalendar": "^6.1.10",
+        "js-datepicker": "^5.18.2"
     }
 }
