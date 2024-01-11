@@ -103,7 +103,7 @@ class HomeController extends AbstractController
                 $em->persist($reservation);
                 $em->flush();
                 $this->addFlash('success', 'La réservation a été créée avec succès.');
-                return $this->redirectToRoute('user.meetingroom.show', ['id' => $meetingroom->getId()]);
+                return $this->redirectToRoute('user.home.index');
                 // return $this->redirectToRoute('user.vehicle.payment.stripe', ['reservationid' => $reservation->getId()]);
             }
         }

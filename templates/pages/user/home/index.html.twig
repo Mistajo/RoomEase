@@ -7,7 +7,27 @@
 {% block main %}
 
 	<h1 class=' text-secondary text-center my-3 display-5'>Bienvenue</h1>
-	<div class="container">
+	<div
+		class="container">
+
+		<!--Alerte Flash-->
+		<div class="col-md-6 mx-auto">
+			{% for message in app.flashes('success') %}
+				<div class="text-center alert alert-success alert-dismissible fade show" role="alert">
+					{{message}}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			{% endfor %}
+
+			{% for message in app.flashes('warning') %}
+				<div class="text-center alert alert-warning alert-dismissible fade show" role="alert">
+					{{message}}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			{% endfor %}
+		</div>
+		<!--Fin Alerte Flash-->
+
 
 		<div class=' jumbotron'>
 			{{ form_start(form) }}
