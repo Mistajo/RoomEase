@@ -9,6 +9,7 @@ use App\Form\SearchFormType;
 use App\Form\ReservationFormType;
 use App\Repository\MeetingRoomRepository;
 use App\Repository\ReservationRepository;
+use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -69,10 +70,11 @@ class HomeController extends AbstractController
     }
 
     #[Route('/meetingroom/{id}/reservation', name: 'user.meetingroom.reservation')]
-    public function reservation(MeetingRoom $meetingroom, Request $request, EntityManagerInterface $em, ReservationRepository $reservationRepository): Response
+    public function reservation(MeetingRoom $meetingroom, Request $request, EntityManagerInterface $em, MailerService $mailer): Response
     {
 
         // Création d'une nouvelle réservation
+        $user = $this->getUser();
         $reservation = new Reservation();
         $form = $this->createForm(ReservationFormType::class, $reservation);
         $form->handleRequest($request);
@@ -102,6 +104,8 @@ class HomeController extends AbstractController
             } else {
                 $em->persist($reservation);
                 $em->flush();
+                $mailer->sendReservationConfirmation($reservation, $user);
+
                 $this->addFlash('success', 'La réservation a été créée avec succès.');
                 return $this->redirectToRoute('user.home.index');
                 // return $this->redirectToRoute('user.vehicle.payment.stripe', ['reservationid' => $reservation->getId()]);
