@@ -153,13 +153,16 @@
 
 							<li>
 								Equipements :
-								{% if meetingroom.equipment is empty %}
-									<p>---</p>
-								{% else %}
-									{% for equipment in meetingroom.equipment %}
-										<span class="badge text-bg-primary">{{equipment.name}}</span>
-									{% endfor %}
-								{% endif %}
+								{% for e in meetingroom.equipment %}
+									<span class="badge text-bg-primary">{{e.name}}</span>
+								{% endfor %}
+								{# {% if meetingroom.equipment is empty %}
+																																	<p>---</p>
+																																{% else %}
+																																	{% for equipment in meetingroom.equipment %}
+																																		<span class="badge text-bg-primary">{{equipment.name}}</span>
+																																	{% endfor %}
+																																{% endif %} #}
 							</li>
 
 							<p class="d-flex justify-content-between align-items-center gap-2 my-2">
@@ -190,9 +193,9 @@
 				</div>
 			{% endfor %}
 			{# display navigation
-																																																																																																																																																																																																																																																																																																																																																																																				<div class="mt-2 d-flex justify-content-center">
-																																																																																																																																																																																																																																																																																																																																																																																					{{ knp_pagination_render(agencies) }}
-																																																																																																																																																																																																																																																																																																																																																																																				</div> #}
+																																																																																																																																																																																																																																																																																																																																																																																													<div class="mt-2 d-flex justify-content-center">
+																																																																																																																																																																																																																																																																																																																																																																																														{{ knp_pagination_render(agencies) }}
+																																																																																																																																																																																																																																																																																																																																																																																													</div> #}
 		</div>
 	</div>
 {% endblock %}

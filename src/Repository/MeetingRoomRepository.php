@@ -62,7 +62,7 @@ class MeetingRoomRepository extends ServiceEntityRepository
         // ->setParameter('location', '%' . $search->getLocation() . '%');
 
 
-        if ($search->getMinCapacity()) {
+        if (!empty($search->getMinCapacity())) {
             $qb->andWhere('r.Capacity >= :minCapacity')
                 ->setParameter('minCapacity', $search->getMinCapacity());
         }
@@ -72,26 +72,26 @@ class MeetingRoomRepository extends ServiceEntityRepository
                 ->setParameter('name', "%{$search->getName()}%");
         }
 
-        if ($search->getMaxCapacity()) {
+        if (!empty($search->getMaxCapacity())) {
             $qb->andWhere('r.Capacity <= :maxCapacity')
                 ->setParameter('maxCapacity', $search->getMaxCapacity());
         }
 
-        // if ($search->getEquipments()) {
-        //     $qb->leftJoin('r.equipment', 'e', 'WITH', 'e.id IN (:equipments)')
-        //         ->setParameter('equipments', $search->getEquipments());
-        // }
+        if (!empty($search->getEquipments())) {
+            $qb = $qb
+                ->andWhere('e.id IN (:equipments)')
+                ->setParameter('equipments', $search->getEquipments());
+        }
 
 
-        if ($search->getMinPrice()) {
+        if (!empty($search->getMinPrice())) {
             $qb->andWhere('r.minprice >= :minPrice')
                 ->setParameter('minPrice', $search->getMinPrice());
         }
-        if ($search->getMaxPrice()) {
+        if (!empty($search->getMaxPrice())) {
             $qb->andWhere('r.maxprice <= :maxPrice')
                 ->setParameter('maxPrice', $search->getMaxPrice());
         }
-
         return $qb->getQuery()->getResult();
     }
 }

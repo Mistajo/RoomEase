@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\SearchRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -68,13 +69,17 @@ class Search
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: Equipment::class, inversedBy: 'searches')]
-    private Collection $equipments;
+    private $equipments;
+
+
+
+
+
+
 
     public function __construct()
     {
         $this->meetingroom = new ArrayCollection();
-        $this->equipments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -202,26 +207,14 @@ class Search
         return $this;
     }
 
-    /**
-     * @return Collection<int, Equipment>
-     */
-    public function getEquipments(): Collection
+    public function getEquipments()
     {
         return $this->equipments;
     }
 
-    public function addEquipment(Equipment $equipment): static
+    public function setEquipments($equipments)
     {
-        if (!$this->equipments->contains($equipment)) {
-            $this->equipments->add($equipment);
-        }
-
-        return $this;
-    }
-
-    public function removeEquipment(Equipment $equipment): static
-    {
-        $this->equipments->removeElement($equipment);
+        $this->equipments = $equipments;
 
         return $this;
     }

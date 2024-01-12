@@ -48,13 +48,11 @@ class Equipment
     #[ORM\ManyToMany(targetEntity: MeetingRoom::class, mappedBy: 'equipment')]
     private Collection $meetingRooms;
 
-    #[ORM\ManyToMany(targetEntity: Search::class, mappedBy: 'equipments')]
-    private Collection $searches;
+
 
     public function __construct()
     {
         $this->meetingRooms = new ArrayCollection();
-        $this->searches = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -137,32 +135,6 @@ class Equipment
         return $this;
     }
 
-    /**
-     * @return Collection<int, Search>
-     */
-    public function getSearches(): Collection
-    {
-        return $this->searches;
-    }
-
-    public function addSearch(Search $search): static
-    {
-        if (!$this->searches->contains($search)) {
-            $this->searches->add($search);
-            $search->addEquipment($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSearch(Search $search): static
-    {
-        if ($this->searches->removeElement($search)) {
-            $search->removeEquipment($this);
-        }
-
-        return $this;
-    }
 
     public function __toString()
     {
