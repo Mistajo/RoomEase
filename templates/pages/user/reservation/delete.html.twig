@@ -1,0 +1,44 @@
+{% extends 'themes/base_user.html.twig' %}
+
+{% block title %}
+	- Espace Utilisateur - Mes Reservations
+{% endblock %}
+
+{% block main %}
+
+	<h1 class=' text-secondary text-center my-5 display-5'>Annulation de la commande</h1>
+
+	<div class="container text-center">
+		<div class="row d-flex">
+
+			<div class="">
+				<h3>
+					Êtes-vous sûr de vouloir annuler la réservation de "{{ reservation.title }}" du
+					{{ reservation.startDate|format_datetime(locale='fr') }}
+
+					au
+					{{ reservation.endDate|format_datetime(locale='fr') }}
+					?
+				</h3>
+
+				{{ form_start(form) }}
+				<div class="mb-3">
+					<label for="">Motif de l'annulation :</label>
+					<div class="text-danger">{{form_errors(form.cancelReason)}}</div>
+					{{form_widget(form.cancelReason, {'attr': {'class': 'form-control'}})}}
+				</div>
+
+
+				<div class="mb-3">
+					<input formnovalidate type="submit" class="btn btn-danger" value="Annuler La Reservation">
+				</div>
+
+
+				{{ form_end(form) }}
+			</div>
+		</div>
+
+
+	</div>
+
+{% endblock %}

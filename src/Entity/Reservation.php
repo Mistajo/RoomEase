@@ -56,6 +56,19 @@ class Reservation
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $createdAt = null;
 
+
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "Le motif d'annulation ne doit pas dépasser {{ limit }} caractères.",
+    )]
+    #[Assert\Regex(
+        pattern: "/^[0-9a-zA-Z-_' áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$/i",
+        match: true,
+        message: "Le motif d'annulation doit contenir uniquement des lettres, des chiffres le tiret du milieu et l'undescore.",
+    )]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $cancelReason = null;
+
     public function __construct()
     {
         $this->statut = "En Attente";
@@ -146,6 +159,18 @@ class Reservation
     public function setCreatedAt(?\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getCancelReason(): ?string
+    {
+        return $this->cancelReason;
+    }
+
+    public function setCancelReason(?string $cancelReason): static
+    {
+        $this->cancelReason = $cancelReason;
 
         return $this;
     }

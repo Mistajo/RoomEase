@@ -78,11 +78,11 @@ class HomeController extends AbstractController
         $reservation = new Reservation();
         $form = $this->createForm(ReservationFormType::class, $reservation);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $startDate = $reservation->getStartDate();
             $endDate = $reservation->getEndDate();
             $meetingRoomId = $meetingroom->getId();
-
             $reservation->setUser($this->getUser());
             $reservation->setMeetingRoom($meetingroom);
             $reservation->setStatut('Reservé');
@@ -112,7 +112,7 @@ class HomeController extends AbstractController
             }
         }
         // Affichage du formulaire de réservation
-        return $this->render('pages/user/reservation/reservation.html.twig', [
+        return $this->render('pages/user/home/reservation.html.twig', [
             'meetingroom' => $meetingroom,
             'form' => $form->createView(),
 
