@@ -3,6 +3,7 @@
 namespace App\Controller\User\Reservation;
 
 use App\Entity\Reservation;
+use App\Service\MailerService;
 use App\Form\ReservationDeleteFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\MeetingRoomRepository;
@@ -37,8 +38,9 @@ class ReservationController extends AbstractController
     }
 
     #[Route('/reservation/{id}/delete', name: 'user.reservation.delete')]
-    public function delete(Reservation $reservation, Request $request, EntityManagerInterface $em): Response
+    public function delete(Reservation $reservation, Request $request, EntityManagerInterface $em, MailerService $mailer): Response
     {
+        $user = $this->getUser();
         $form = $this->createForm(ReservationDeleteFormType::class, $reservation, [
             "method" => "PUT"
         ]);
@@ -47,6 +49,7 @@ class ReservationController extends AbstractController
             $reservation->setstatut('Annulé');
             $em->persist($reservation);
             $em->flush();
+            $mailer->sendReservationCancellationConfirmation($reservation, $user);
 
             $this->addFlash('success', 'La Réservation a été annulée avec succès');
 

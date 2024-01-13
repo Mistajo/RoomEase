@@ -1,0 +1,24 @@
+{% block subject %}Annulation de votre réservation
+	{{reservation.id}}
+	:
+	{{reservation.title}}
+{% endblock %}
+
+{% block body %}
+	<p>Bonjour
+		{{ reservation.user.firstName }},</p>
+
+	<p>Votre demande d'annulation pour la salle "{{ reservation.meetingroom.name }}"
+																										du
+		{{ reservation.startDate|format_datetime(locale='fr') }}
+		au
+		{{ reservation.endDate|format_datetime(locale='fr') }}
+		a été confirmée.</p>
+
+	A Bientôt
+	<br>
+	L'équipe de Réservation des salles
+	<br>
+	Room Ease
+
+{% endblock %}

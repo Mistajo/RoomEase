@@ -34,6 +34,19 @@ class MailerService
         $this->mailer->send($email);
     }
 
+    public function sendReservationCancellationConfirmation(Reservation $reservation, User $user)
+    {
+        $email = (new TemplatedEmail());
+        $email->from(new Address('roomease@gmail.com', 'Contact'))
+            ->to($user->getEmail())
+            ->subject('Annulation de votre réservation')
+            ->html($this->twig->render('Email/cancellation_reservation_email.html.twig', [
+                'reservation' => $reservation,
+            ]));
+
+        $this->mailer->send($email);
+    }
+
     public function sendReservationReminder(Reservation $reservation, User $user)
     {
         $email = (new TemplatedEmail());
