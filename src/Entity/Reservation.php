@@ -69,6 +69,7 @@ class Reservation
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $cancelReason = null;
 
+
     public function __construct()
     {
         $this->statut = "En Attente";

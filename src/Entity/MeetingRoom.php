@@ -82,6 +82,15 @@ class MeetingRoom
     #[ORM\ManyToMany(targetEntity: Equipment::class, inversedBy: 'meetingRooms')]
     private Collection $equipment;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $totalReservations = 0;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $lastReservation = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $durationTotalReservation = 0;
+
     public function __construct()
     {
         $this->isAvailable = true;
@@ -294,6 +303,69 @@ class MeetingRoom
     public function removeEquipment(Equipment $equipment): static
     {
         $this->equipment->removeElement($equipment);
+
+        return $this;
+    }
+
+    public function incrementTotalReservations()
+    {
+        $this->totalReservations++;
+    }
+
+    public function getTimestampLastReservation()
+    {
+        if ($this->lastReservation) {
+            return $this->lastReservation->getTimestamp();
+        } else {
+            return 0;
+        }
+    }
+
+    public function updateLastReservation(Reservation $reservation)
+    {
+        $this->lastReservation = $reservation->getstartDate();
+        $this->lastReservation = $reservation->getendDate();
+    }
+
+    public function incrementDureeTotaleReservation($duration)
+    {
+        $this->durationTotalReservation += $duration;
+    }
+
+
+
+    public function getTotalReservations(): ?int
+    {
+        return $this->totalReservations;
+    }
+
+    public function setTotalReservations(?int $totalReservations): static
+    {
+        $this->totalReservations = $totalReservations;
+
+        return $this;
+    }
+
+    public function getLastReservation(): ?\DateTimeInterface
+    {
+        return $this->lastReservation;
+    }
+
+    public function setLastReservation(?\DateTimeInterface $lastReservation): static
+    {
+        $this->lastReservation = $lastReservation;
+
+        return $this;
+    }
+
+    public function getDurationTotalReservation(): ?int
+    {
+        return $this->durationTotalReservation;
+    }
+
+    public function setDurationTotalReservation(?int $durationTotalReservation): static
+    {
+        $this->durationTotalReservation = $durationTotalReservation;
 
         return $this;
     }

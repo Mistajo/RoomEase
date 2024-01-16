@@ -22,6 +22,8 @@ Encore
      */
     .addEntry('app', './assets/app.js')
 
+    
+
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
 
@@ -56,6 +58,9 @@ Encore
     // enables Sass/SCSS support
     .enableSassLoader()
 
+    // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
+    .enableStimulusBridge('./assets/controllers.json')
+
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
 
@@ -69,5 +74,12 @@ Encore
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
 ;
-
-module.exports = Encore.getWebpackConfig();
+var config = Encore.getWebpackConfig();
+config.watchOptions = {
+    poll: true,
+};
+ 
+config.resolve.extensions.push('json');
+ 
+//module.exports = Encore.getWebpackConfig();
+module.exports = config;
