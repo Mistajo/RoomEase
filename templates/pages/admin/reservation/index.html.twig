@@ -1,0 +1,87 @@
+{% extends 'themes/base_admin.html.twig' %}
+
+{% block title %}
+	- Admin - Liste des Reservations
+{% endblock %}
+
+
+{% block main %}
+	<h1 class="text-secondary text-center my-3 display-5">Liste des Reservations</h1>
+
+
+	<div class="col-md-6 mx-auto">
+		{% for message in app.flashes('success') %}
+			<div class="text-center alert alert-success alert-dismissible fade show" role="alert">
+				{{message}}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		{% endfor %}
+	</div>
+
+	<div class="container mt-5">
+
+		<div class="row">
+			{% if reservations is empty %}
+				<p class="text-center mt-5">Aucune Reservation pour l'instant</p>
+			{% else %}
+				{% for reservation in reservations %}
+					<div class="col-md-6 mb-4 ">
+						<div class="card mb-3 border shadow w-75 h-100">
+							{% if reservation.meetingroom.image %}
+								<img src="{{ vich_uploader_asset(reservation.meetingroom, 'imageFile')}}" class="w-100 h-100 rounded" alt="{{ reservation.meetingroom.name }}">
+							{% else %}
+								<img src="{{asset('images/NoImage/No_Image.jpg')}}" alt="{{ meetingroom.description|striptags|u.truncate(30, '...')}}" class="card-img-top img-fluid">
+							{% endif %}
+							<div class="card-body w-75 h-100">
+
+								<h5 class="card-title">
+									<strong>
+										Numéro de Réservation :
+									</strong>
+									{{reservation.Id |u.truncate(70, '...')|raw}}</h5>
+								<p class="card-text">
+									<strong>Nom de la salle :</strong>
+									{{reservation.meetingroom.name |u.truncate(70, '...')|raw}}
+								</p>
+								<p class="card-text">
+									<strong>Nom de la réservation :</strong>
+									{{reservation.title |u.truncate(70, '...')|raw}}
+								</p>
+								<p class="card-text">
+									<strong>Date de Début :</strong>
+									{{reservation.startDate |format_datetime(locale='fr')}}
+								</p>
+								<p class="card-text">
+									<strong>Date de Fin :</strong>
+									{{reservation.endDate |format_datetime(locale='fr')}}
+								</p>
+								<p class="card-text">
+									<strong>Statut :</strong>
+									{% if reservation.statut == 'Reservé'  %}
+										<span class="badge text-bg-success">{{reservation.statut}}</span>
+									{% else %}
+										<span class="badge text-bg-danger">{{reservation.statut}}</span>
+									{% endif %}
+								</p>
+								{% if reservation.statut == 'Reservé'  %}
+									<a href="{{path('user.reservation.delete',{'id': reservation.id})}}" class="btn btn-danger">Annuler la commande</a>
+								{% endif %}
+								<p class="card-text">
+									<small class="text-body-secondary">Validé
+										{{reservation.createdAt|ago}}</small>
+								</p>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+				{# display navigation #}
+				<div class="mt-2 d-flex justify-content-center">
+					{{ knp_pagination_render(users) }}
+				</div>
+			{% endif %}
+		</div>
+
+	</div>
+
+
+{% endblock %}

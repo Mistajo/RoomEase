@@ -8,6 +8,7 @@ use App\Entity\Reservation;
 use Symfony\Component\Mime\Address;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 class MailerService
 {
@@ -19,6 +20,30 @@ class MailerService
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
+    }
+
+    public function send(array $data = []): void
+    {
+        $senderEmail = $data['sender_email'];
+        $senderName = $data['sender_name'];
+        $recipientEmail = $data['recipient_email'];
+        $subject = $data['subject'];
+        $htmlTemplate = $data['html_template'];
+        $context = $data['context'];
+
+        $email = new TemplatedEmail();
+
+        $email->from(new Address($senderEmail, $senderName))
+            ->to($recipientEmail)
+            ->subject($subject)
+            ->htmlTemplate($htmlTemplate)
+            ->context($context);
+
+        try {
+            $this->mailer->send($email);
+        } catch (TransportExceptionInterface $te) {
+            throw $te;
+        }
     }
 
     public function sendReservationConfirmation(Reservation $reservation, User $user)

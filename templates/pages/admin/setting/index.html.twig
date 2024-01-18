@@ -1,0 +1,41 @@
+{% extends 'themes/base_admin.html.twig' %}
+
+{% block title %}
+	- Admin - Parametres du site :
+{% endblock %}
+
+
+{% block main %}
+	<h1 class="text-secondary text-center my-3 display-5">Les Paramètres du Site</h1>
+
+	<div class="col-md-6 mx-auto">
+		{% for message in app.flashes('success') %}
+			<div class="text-center alert alert-success alert-dismissible fade show" role="alert">
+				{{message}}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		{% endfor %}
+	</div>
+
+	<div class="container mt-5 text-center">
+		<div class="col-md-6 mx-auto">
+			<div class="card text-bg-light bg- mb-3 mx-5" style="max-width: 28rem;">
+				<div class="card-header bg-secondary text-white">Paramètres</div>
+				<div class="card-body">
+					<p class="card-text">
+						<strong>
+							<i title="E-mail" class="fa-solid fa-at"></i>
+						</strong>:
+						{{setting.email}}</p>
+					<p class="card-text">
+						<strong>
+							<i title="Téléphone" class="fa-solid fa-phone"></i>
+						</strong>:
+						{{setting.phone ?? 'Non renseigné'}}</p>
+					<a class="btn btn-primary" href="{{path('admin.setting.edit', {'id':setting.id})}}">Modifier les paramètres</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

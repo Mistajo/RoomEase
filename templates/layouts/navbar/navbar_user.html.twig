@@ -23,7 +23,7 @@
 					<a class="nav-link" href="#">Rechercher</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link disabled" aria-disabled="true">Contact</a>
+					<a class="nav-link" href="{{path('visitor.contact.create')}}">Contact</a>
 				</li>
 			</ul>
 			<div class="ms-auto">
@@ -39,6 +39,16 @@
 								{% if is_granted('ROLE_ADMIN') %}
 									<li>
 										<a class="dropdown-item" href="{{path('admin.home.dashboard')}}">Espace admin</a>
+									</li>
+									<li>
+										<a class="dropdown-item" href="{{path('admin.setting.index')}}">Paramètre du Site</a>
+									</li>
+									<li>
+										<a class="dropdown-item" href="{{path('admin.profile.index')}}">Mon Profil</a>
+									</li>
+								{% elseif is_granted('ROLE_USER') %}
+									<li>
+										<a class="dropdown-item" href="{{path('user.profile.index')}}">Mon Profil</a>
 									</li>
 								{% endif %}
 								<li>

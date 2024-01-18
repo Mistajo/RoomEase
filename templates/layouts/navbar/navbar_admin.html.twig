@@ -11,19 +11,23 @@
 			</form>
 			<ul class="navbar-nav me-auto">
 				<li class="nav-item">
-					<a class="nav-link active" aria-current="page" href="{{path('visitor.welcome.index')}}">Accueil</a>
+					<a class="nav-link" href="{{path('visitor.welcome.index')}}">Accueil</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link active" aria-current="page" href="{{path('admin.equipments.index')}}">Equipements</a>
+					<a class="nav-link" href="{{path('admin.equipments.index')}}">Equipements</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link active" aria-current="page" href="{{path('admin.meetingroom.index')}}">Salles de Reunions</a>
+					<a class="nav-link" href="{{path('admin.meetingroom.index')}}">Salles de Reunions</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#">A Propos</a>
+					<a class="nav-link" href="{{path('admin.user.index')}}">Liste Des Utilisateurs</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link disabled" aria-disabled="true">Contact</a>
+					<a class="nav-link" href="{{path('admin.reservation.index')}}">Liste Des Reservations</a>
+
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{path('visitor.contact.create')}}">Contact</a>
 				</li>
 			</ul>
 			<div class="ms-auto">
@@ -37,7 +41,13 @@
 							</a>
 							<ul class="dropdown-menu dropdown-menu-end">
 								<li>
+									<a class="dropdown-item" href="{{path('admin.profile.index')}}">Mon Profil</a>
+								</li>
+								<li>
 									<a class="dropdown-item" href="{{path('user.home.index')}}">Espace client</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="{{path('admin.setting.index')}}">Paramètre du Site</a>
 								</li>
 								<li>
 									<a class="dropdown-item" href="{{path('app_logout')}}">Déconnexion</a>

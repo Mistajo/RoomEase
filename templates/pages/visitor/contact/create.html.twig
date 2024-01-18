@@ -1,0 +1,104 @@
+{% extends "themes/base_visitor.html.twig" %}
+
+{% block title %}
+	- Formulaire de Contact
+{% endblock %}
+
+{% block main %}
+	<main class="mt-5 container-fluid text-center">
+		<h1 class="text-secondary text-center my-3 display-5 mt-5">Contactez-Nous</h1>
+
+		<div class="container my-5 mt-5">
+			<div class="row">
+				<div
+					class="col-md-6 mt-5">
+					{# on affiche les message de type success #}
+					{% for message in app.flashes('success') %}
+						<div class="alert alert-success alert-dismissible fade show" role="alert">
+							{{message}}
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					{% endfor %}
+					{# on creer le formulaire de contact #}
+					{{form_start(form)}}
+					<div
+						class="row">
+						{# on mets en forme le prénom #}
+						<div class="col-md-6">
+							<div class="mb-3">
+								<label for="contact_form_firstName">Prénom :</label>
+								<div class="text-danger">{{form_errors(form.firstName)}}</div>
+								{{form_widget(form.firstName, {'attr': {'class':'form-control'}})}}
+							</div>
+						</div>
+						{# on mets en forme le nom #}
+						<div class="col-md-6">
+							<div class="mb-3">
+								<label for="contact_form_lastName">Nom :</label>
+								<div class="text-danger">{{form_errors(form.lastName)}}</div>
+								{{form_widget(form.lastName, {'attr': {'class':'form-control'}})}}
+							</div>
+						</div>
+					</div>
+
+					<div
+						class="row">
+						{#  #}
+						<div class="col-md-6">
+							<div class="mb-3">
+								<label for="contact_form_email">Email :</label>
+								<div class="text-danger">{{form_errors(form.email)}}</div>
+								{{form_widget(form.email, {'attr': {'class':'form-control'}})}}
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="mb-3">
+								<label for="contact_form_phone">Numéro de téléphone :</label>
+								<div class="text-danger">{{form_errors(form.phone)}}</div>
+								{{form_widget(form.phone, {'attr': {'class':'form-control'}})}}
+							</div>
+						</div>
+
+					</div>
+
+					<div class="mb-3">
+						<label for="contact_form_message">Message :</label>
+						<div class="text-danger">{{form_errors(form.message)}}</div>
+						{{form_widget(form.message, {'attr': {'class': 'form-control', 'rows': 4}})}}
+					</div>
+
+					<div class="mb-3">
+						<input formnovalidate type="submit" class="btn btn-primary" value="Envoyer">
+					</div>
+					{{form_end(form)}}
+				</div>
+
+				<div class="col-md-6 d-flex flex-column justify-content-center align-items-center">
+					<div class="text-center text-md-start">
+						<p title="E-mail">
+							<i class="fa-solid fa-envelope"></i>
+							:
+							{{setting.email}}
+
+						</p>
+						{# {% if setting.phone %} #}
+						<p title="Téléphone">
+							<i class="fa-solid fa-phone"></i>
+							:
+							{{setting.phone}}
+							0
+						</p>
+						{# {% endif %} #}
+					</div>
+
+				</div>
+				<hr>
+				<div class="container">
+					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1103.485910475077!2d2.3160561614438686!3d48.866855822969!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66fd2012111c1%3A0x512be126e5846142!2s8%20Av.%20des%20Champs-%C3%89lys%C3%A9es%2C%2075008%20Paris!5e0!3m2!1sfr!2sfr!4v1695992587826!5m2!1sfr!2sfr" class="w-100 h-100" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+				</div>
+			</div>
+		</div>
+
+	</main>
+{% endblock %}

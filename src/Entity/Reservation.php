@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ReservationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -69,10 +71,16 @@ class Reservation
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $cancelReason = null;
 
+    #[ORM\OneToMany(mappedBy: 'reservation', targetEntity: Statistic::class)]
+    private Collection $statistics;
+
+
+
 
     public function __construct()
     {
         $this->statut = "En Attente";
+        $this->statistics = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -172,6 +180,36 @@ class Reservation
     public function setCancelReason(?string $cancelReason): static
     {
         $this->cancelReason = $cancelReason;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Statistic>
+     */
+    public function getStatistics(): Collection
+    {
+        return $this->statistics;
+    }
+
+    public function addStatistic(Statistic $statistic): static
+    {
+        if (!$this->statistics->contains($statistic)) {
+            $this->statistics->add($statistic);
+            $statistic->setReservation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStatistic(Statistic $statistic): static
+    {
+        if ($this->statistics->removeElement($statistic)) {
+            // set the owning side to null (unless already changed)
+            if ($statistic->getReservation() === $this) {
+                $statistic->setReservation(null);
+            }
+        }
 
         return $this;
     }

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Search;
 use App\Entity\MeetingRoom;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -53,45 +54,78 @@ class MeetingRoomRepository extends ServiceEntityRepository
      * @param Search $searchLes critères de recherche
      * @return meetingRooms[] Les salles de réunion trouvées
      */
-    public function search(Search $search): array
+    public function search(Search $search, string $order = null): array
     {
         $qb = $this->createQueryBuilder('r')
             ->select('r', 'e')
-            ->join('r.equipment', 'e');
-        // ->andWhere('r.location LIKE :location')
-        // ->setParameter('location', '%' . $search->getLocation() . '%');
+            ->leftJoin('r.equipment', 'e')
+            ->setMaxResults(20);
 
+        $this->applySearchFilters($qb, $search);
+        // $this->applyOrder($qb, $order);
 
-        if (!empty($search->getMinCapacity())) {
-            $qb->andWhere('r.Capacity >= :minCapacity')
-                ->setParameter('minCapacity', $search->getMinCapacity());
-        }
+        return $qb->getQuery()->getResult();
+    }
 
-        if (!empty($search->getName())) {
+    protected function applySearchFilters(QueryBuilder $qb, Search $search): void
+    {
+        if ($search->getName()) {
             $qb->andWhere('r.name LIKE :name')
                 ->setParameter('name', "%{$search->getName()}%");
         }
 
-        if (!empty($search->getMaxCapacity())) {
-            $qb->andWhere('r.Capacity <= :maxCapacity')
-                ->setParameter('maxCapacity', $search->getMaxCapacity());
-        }
-
-        if (!empty($search->getEquipments())) {
-            $qb = $qb
-                ->andWhere('e.id IN (:equipments)')
+        if ($search->getEquipments()->count() > 0) {
+            $qb->andWhere('e.id IN (:equipments)')
                 ->setParameter('equipments', $search->getEquipments());
         }
 
+        if ($search->getMinCapacity()) {
+            $qb->andWhere('r.Capacity >= :min_capacity')
+                ->setParameter('min_capacity', $search->getMinCapacity());
+        }
 
-        if (!empty($search->getMinPrice())) {
-            $qb->andWhere('r.minprice >= :minPrice')
-                ->setParameter('minPrice', $search->getMinPrice());
+        if ($search->getMaxCapacity()) {
+            $qb->andWhere('r.Capacity <= :max_capacity')
+                ->setParameter('max_capacity', $search->getMaxCapacity());
         }
-        if (!empty($search->getMaxPrice())) {
-            $qb->andWhere('r.maxprice <= :maxPrice')
-                ->setParameter('maxPrice', $search->getMaxPrice());
+
+        if ($search->getMinPrice()) {
+            $qb->andWhere('r.price >= :min_price')
+                ->setParameter('min_price', $search->getMinPrice());
         }
-        return $qb->getQuery()->getResult();
+
+        if ($search->getMaxPrice()) {
+            $qb->andWhere('r.price <= :max_price')
+                ->setParameter('max_price', $search->getMaxPrice());
+        }
     }
+
+    // protected function applyOrder(QueryBuilder $qb, string $order = null): void
+    // {
+    //     switch ($order) {
+    //         case 'name_asc':
+    //             $qb->orderBy('r.name', 'ASC');
+    //             break;
+
+    //         case 'name_desc':
+    //             $qb->orderBy('r.name', 'DESC');
+    //             break;
+
+    //         case 'capacity_asc':
+    //             $qb->orderBy('r.capacity', 'ASC');
+    //             break;
+
+    //         case 'capacity_desc':
+    //             $qb->orderBy('r.capacity', 'DESC');
+    //             break;
+
+    //         case 'price_asc':
+    //             $qb->orderBy('r.price', 'ASC');
+    //             break;
+
+    //         case 'price_desc':
+    //             $qb->orderBy('r.price', 'DESC');
+    //             break;
+    //     }
+    // }
 }

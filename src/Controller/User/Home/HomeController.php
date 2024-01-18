@@ -23,12 +23,18 @@ class HomeController extends AbstractController
     #[Route('/home', name: 'user.home.index')]
     public function index(MeetingRoomRepository $meetingRoomRepository, Request $request): Response
     {
-        $meetingrooms = $meetingRoomRepository->findAll();
         $search = new Search();
         $form = $this->createForm(SearchFormType::class, $search);
         $form->handleRequest($request);
 
-        $meetingrooms = $meetingRoomRepository->Search($search);
+        // Vérifier si le formulaire a été soumis ou non
+        if ($form->isSubmitted() && $form->isValid()) {
+            $meetingrooms = $meetingRoomRepository->Search($search);
+        } else {
+            // Pas de formulaire soumis - récupérer toutes les salles
+            $meetingrooms = $meetingRoomRepository->findAll();
+        }
+
         return $this->render(
             'pages/user/home/index.html.twig',
             [

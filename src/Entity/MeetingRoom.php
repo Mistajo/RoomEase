@@ -59,7 +59,7 @@ class MeetingRoom
     #[Vich\UploadableField(mapping: 'meetingrooms', fileNameProperty: 'image')]
     private ?File $imageFile = null;
 
-    #[ORM\Column(length: 255, nullable: true, unique: true)]
+    #[ORM\Column(length: 255, nullable: true,)]
     private ?string $image = null;
 
     #[ORM\Column(type: 'boolean')]
@@ -79,7 +79,7 @@ class MeetingRoom
     #[ORM\OneToMany(mappedBy: 'meetingroom', targetEntity: Reservation::class)]
     private Collection $reservations;
 
-    #[ORM\ManyToMany(targetEntity: Equipment::class, inversedBy: 'meetingRooms')]
+    #[ORM\ManyToMany(targetEntity: Equipment::class, inversedBy: 'meetingRooms', cascade: ["persist"])]
     private Collection $equipment;
 
     #[ORM\Column(nullable: true)]
@@ -91,12 +91,18 @@ class MeetingRoom
     #[ORM\Column(nullable: true)]
     private ?int $durationTotalReservation = 0;
 
+    #[ORM\OneToMany(mappedBy: 'meetingroom', targetEntity: Statistic::class)]
+    private Collection $statistics;
+
+
+
     public function __construct()
     {
         $this->isAvailable = true;
         $this->searches = new ArrayCollection();
         $this->reservations = new ArrayCollection();
         $this->equipment = new ArrayCollection();
+        $this->statistics = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -366,6 +372,36 @@ class MeetingRoom
     public function setDurationTotalReservation(?int $durationTotalReservation): static
     {
         $this->durationTotalReservation = $durationTotalReservation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Statistic>
+     */
+    public function getStatistics(): Collection
+    {
+        return $this->statistics;
+    }
+
+    public function addStatistic(Statistic $statistic): static
+    {
+        if (!$this->statistics->contains($statistic)) {
+            $this->statistics->add($statistic);
+            $statistic->setMeetingroom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStatistic(Statistic $statistic): static
+    {
+        if ($this->statistics->removeElement($statistic)) {
+            // set the owning side to null (unless already changed)
+            if ($statistic->getMeetingroom() === $this) {
+                $statistic->setMeetingroom(null);
+            }
+        }
 
         return $this;
     }

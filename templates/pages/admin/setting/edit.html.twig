@@ -1,0 +1,41 @@
+{% extends 'themes/base_admin.html.twig' %}
+
+{% block title %}
+	- Admin - Modification des Parametres du site :
+{% endblock %}
+
+
+{% block main %}
+	<h1 class="text-secondary text-center my-3 display-5">Modification des paramètres du site</h1>
+
+
+	<div class="container mt-5">
+		<div class="col-md-6 mx-auto shadow p-4 bg-secondary">
+			{{form_start(form)}}
+			<div class="mb-3">
+				<label for="edit_setting_form_email">
+					<strong>
+						<i title="E-mail" class="fa-solid fa-at text-white"></i>
+					</strong>:</label>
+
+				<div class="text-danger">{{form_errors(form.email)}}</div>
+				{{form_widget(form.email, {'attr': {'class':'form-control'}})}}
+			</div>
+			<div class="mb-3">
+				<label for="edit_setting_form_phone">
+					<strong>
+						<i title="Téléphone" class="fa-solid fa-phone text-white"></i>
+					</strong>:</label>
+
+				<div class="text-danger">{{form_errors(form.phone)}}</div>
+				{{form_widget(form.phone, {'attr': {'class':'form-control'}})}}
+			</div>
+			<div>
+				<input formnovalidate type="submit" class="btn btn-primary" value="Modifier">
+			</div>
+			{{form_end(form)}}
+		</div>
+	</div>
+
+
+{% endblock %}

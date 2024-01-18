@@ -1,0 +1,87 @@
+{% extends 'themes/base_admin.html.twig' %}
+
+{% block title %}
+	- Admin - Liste des Utilisateurs
+{% endblock %}
+
+
+{% block main %}
+	<h1 class="text-secondary text-center my-3 display-5">Liste des Utilisateurs</h1>
+
+
+	<div class="col-md-6 mx-auto">
+		{% for message in app.flashes('success') %}
+			<div class="text-center alert alert-success alert-dismissible fade show" role="alert">
+				{{message}}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		{% endfor %}
+	</div>
+
+	<div class="container mt-5">
+
+		<div class="row">
+			{% if users is empty %}
+				<p class="text-center mt-5">Aucun Utilisteur pour l'instant</p>
+			{% else %}
+				{% for user in users %}
+					<div class="col-md-6 mb-4 ">
+						<div class="card mb-3 border shadow w-75 h-100">
+							<h5 class="card-header">{{user.firstName}}
+								{{user.lastName}}</h5>
+							<div class="card-body w-75 h-100">
+								<h5 class="card-title">
+									<strong>
+										Rôles :
+									</strong>
+									{% for role in user.roles %}
+										{% if "ROLE_SUPER_ADMIN" == role %}
+											<span class="badge rounded-pill text-bg-primary">{{role}}</span>
+										{% elseif "ROLE_ADMIN" == role %}
+											<span class="badge rounded-pill text-bg-secondary">{{role}}</span>
+										{% elseif "ROLE_USER" == role %}
+											<span class="badge rounded-pill text-bg-success">{{role}}</span>
+										{% endif %}
+									</h5>
+								{% endfor %}
+								<p class="card-text">
+									<strong>Compte Vérifié :</strong>
+									{% if user.isVerified is not empty %}
+										<span>{{user.verifiedAt|date('d-m-Y H:i:s')}}</span>
+									{% else %}
+										<span>
+											<p>Pas Encore Verifié</p>
+										</span>
+									{% endif %}
+								</p>
+								<p class="card-text">
+									{% if "ROLE_SUPER_ADMIN" not in user.roles %}
+										{% if user.isVerified %}
+											<a class="text-primary m-2" href="{{path('admin.user.edit_roles', {'id' : user.id})}}" title="Modifier rôle">
+												<i class="fa-solid fa-user-pen"></i>
+											</a>
+										{% endif %}
+										<a onclick="event.preventDefault(); confirm('Confirmez-vous la supression de cet utilisateur ?') && document.querySelector('#delete-user-{{user.id}}').submit();" class="text-danger m-2" title="Supprimer l'utilisateur" href="#">
+											<i class="fa-solid fa-user-minus"></i>
+										</a>
+										<form action="{{path('admin.user.delete', {'id':user.id})}}" method="POST" id="delete-user-{{user.id}}">
+											<input type="hidden" name="_method" value="DELETE">
+											<input type="hidden" name="csrf_token" value="{{csrf_token('delete_user_'~user.id)}}">
+										</form>
+									{% endif %}
+								</p>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+				{# display navigation #}
+				<div class="mt-2 d-flex justify-content-center">
+					{{ knp_pagination_render(users) }}
+				</div>
+			{% endif %}
+		</div>
+
+	</div>
+
+
+{% endblock %}
