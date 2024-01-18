@@ -53,16 +53,21 @@
 			<div class="row">
 				<div class="col-md-6">
 					<div class="mb-3">
-						<label for="">Nom</label>
+						<label for="">Nom :</label>
 						<div class="text-danger">{{ form_errors(form.name) }}</div>
 						{{ form_widget(form.name, {'attr' : {'class': 'form-control'}}) }}
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="mb-3">
-						<label for="">Equipements</label>
+						<label for="">Equipements :</label>
 						<div class="text-danger">{{ form_errors(form.equipments) }}</div>
-						{{ form_widget(form.equipments, {'attr' : {'class': 'form-control,'}}) }}
+						{% for equipment in form.equipments %}
+							<div class="form-check form-check-inline">
+								{{ form_widget(equipment, {'attr': {'class': 'form-check-input'}}) }}
+								<label class="form-check-label">{{ equipment.vars.label }}</label>
+							</div>
+						{% endfor %}
 					</div>
 				</div>
 			</div>
@@ -70,14 +75,14 @@
 			<div class="row">
 				<div class="col-md-6">
 					<div class="mb-3">
-						<label for="">Capacité Minimale</label>
+						<label for="">Capacité Minimale :</label>
 						<div class="text-danger">{{ form_errors(form.minCapacity) }}</div>
 						{{ form_widget(form.minCapacity, {'attr' : {'class': 'form-control'}}) }}
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="mb-3">
-						<label for="">Capacité Maximale</label>
+						<label for="">Capacité Maximale :</label>
 						<div class="text-danger">{{ form_errors(form.maxCapacity) }}</div>
 						{{ form_widget(form.maxCapacity, {'attr' : {'class': 'form-control'}}) }}
 					</div>
@@ -87,14 +92,14 @@
 			<div class="row">
 				<div class="col-md-6">
 					<div class="mb-3">
-						<label for="">Prix Minimum</label>
+						<label for="">Prix Minimum :</label>
 						<div class="text-danger">{{ form_errors(form.minPrice) }}</div>
 						{{ form_widget(form.minPrice, {'attr' : {'class': 'form-control'}}) }}
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="mb-3">
-						<label for="">Prix Maximum</label>
+						<label for="">Prix Maximum :</label>
 						<div class="text-danger">{{ form_errors(form.maxPrice) }}</div>
 						{{ form_widget(form.maxPrice, {'attr' : {'class': 'form-control'}}) }}
 					</div>
@@ -104,6 +109,7 @@
 
 			<div class="mb-3 text-center">
 				<button type="submit" class='btn btn-primary'>Filtrer</button>
+				<a href="{{path('admin.meetingroom.index')}}" class='btn btn-secondary'>Effacer</a>
 			</div>
 
 
@@ -114,7 +120,7 @@
 		<div
 			class="row">
 			<!-- Card Creation nouvelle salle-->
-			<div class="d-flex justify-content-end align-items-center mx-3 my-3">
+			<div class="d-flex justify-content-end align-items-center mx-1 my-3">
 				<a class="btn btn-secondary" href="{{path('admin.meetingroom.create')}}">
 					<i class="fa-solid fa-plus shadow"></i>
 					Nouvelle Salle</a>
@@ -156,13 +162,6 @@
 								{% for e in meetingroom.equipment %}
 									<span class="badge text-bg-primary">{{e.name}}</span>
 								{% endfor %}
-								{# {% if meetingroom.equipment is empty %}
-																																	<p>---</p>
-																																{% else %}
-																																	{% for equipment in meetingroom.equipment %}
-																																		<span class="badge text-bg-primary">{{equipment.name}}</span>
-																																	{% endfor %}
-																																{% endif %} #}
 							</li>
 
 							<p class="d-flex justify-content-between align-items-center gap-2 my-2">
@@ -193,9 +192,9 @@
 				</div>
 			{% endfor %}
 			{# display navigation
-																																																																																																																																																																																																																																																																																																																																																																																													<div class="mt-2 d-flex justify-content-center">
-																																																																																																																																																																																																																																																																																																																																																																																														{{ knp_pagination_render(agencies) }}
-																																																																																																																																																																																																																																																																																																																																																																																													</div> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																											<div class="mt-2 d-flex justify-content-center">
+																																																																																																																																																																																																																																																																																																																																																																																																																												{{ knp_pagination_render(agencies) }}
+																																																																																																																																																																																																																																																																																																																																																																																																																											</div> #}
 		</div>
 	</div>
 {% endblock %}

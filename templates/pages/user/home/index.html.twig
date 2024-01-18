@@ -43,7 +43,12 @@
 					<div class="mb-3">
 						<label for="">Equipements</label>
 						<div class="text-danger">{{ form_errors(form.equipments) }}</div>
-						{{ form_widget(form.equipments, {'attr' : {'class': 'form-control,'}}) }}
+						{% for equipment in form.equipments %}
+							<div class="form-check form-check-inline">
+								{{ form_widget(equipment, {'attr': {'class': 'form-check-input'}}) }}
+								<label class="form-check-label">{{ equipment.vars.label }}</label>
+							</div>
+						{% endfor %}
 					</div>
 				</div>
 			</div>
@@ -102,8 +107,6 @@
 								<img src="{{ vich_uploader_asset(meetingroom, 'imageFile') }}" alt="{{ meetingroom.name }}" class='card-img-top img-fluid'>
 							{% else %}
 								<img src="{{asset('images/NoImage/No_Image.jpg')}}" alt="{{ meetingroom.description|striptags|u.truncate(30, '...')}}" class="card-img-top img-fluid">
-
-
 							{% endif %}
 						</a>
 						<div class="card-body">
@@ -136,7 +139,7 @@
 							</li>
 
 
-							<p>
+							<p class="my-2">
 								<a href="{{path('user.meetingroom.show', {'id' : meetingroom.id})}}" class="btn btn-secondary">Voir Plus</a>
 
 							</p>

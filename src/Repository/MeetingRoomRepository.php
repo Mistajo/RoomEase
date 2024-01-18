@@ -58,8 +58,14 @@ class MeetingRoomRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('r')
             ->select('r', 'e')
-            ->leftJoin('r.equipment', 'e')
-            ->setMaxResults(20);
+            ->leftJoin('r.equipment', 'e');
+
+        if ($search->getEquipments()) {
+            $qb->andWhere('e IN (:equipments)')
+                ->setParameter('equipments', $search->getEquipments());
+        }
+
+
 
         $this->applySearchFilters($qb, $search);
         // $this->applyOrder($qb, $order);
