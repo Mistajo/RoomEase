@@ -60,10 +60,10 @@ class MeetingRoomRepository extends ServiceEntityRepository
             ->select('r', 'e')
             ->leftJoin('r.equipment', 'e');
 
-        if ($search->getEquipments()) {
-            $qb->andWhere('e IN (:equipments)')
-                ->setParameter('equipments', $search->getEquipments());
-        }
+        // if ($search->getEquipments()) {
+        //     $qb->andWhere('e IN (:equipments)')
+        //         ->setParameter('equipments', $search->getEquipments());
+        // }
 
 
 

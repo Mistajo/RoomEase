@@ -1,7 +1,8 @@
-{% extends 'themes/base_user.html.twig' %}
+{% extends 'themes/base_visitor.html.twig' %}
+
 
 {% block title %}
-	- Reservation salle de réunion - Espace User - Détail de la
+	- Reservation salle de réunion - Espace User - Détail de la salle
 	{{meetingroom.name}}
 {% endblock %}
 
@@ -23,7 +24,7 @@
 	</nav>
 
 	<!-- Titre de la page -->
-	<h1 class=' text-secondary text-center my-3 display-5'>Détail de la
+	<h1 class=' text-secondary text-center my-3 display-5'>Détail de la salle
 		{{meetingroom.name}}</h1>
 	<!-- Fin Titre de la page -->
 

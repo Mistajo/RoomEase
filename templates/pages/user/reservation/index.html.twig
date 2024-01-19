@@ -38,7 +38,6 @@
 						<div class="card mb-3 border shadow w-75 h-100">
 							{% if reservation.meetingroom.image %}
 								<img src="{{ vich_uploader_asset(reservation.meetingroom, 'imageFile')}}" class="card-img-top img-fluid rounded" alt="{{ reservation.meetingroom.name }}">
-
 							{% else %}
 								<img src="{{asset('images/NoImage/No_Image.jpg')}}" alt="{{ meetingroom.description|striptags|u.truncate(30, '...')}}" class="card-img-top img-fluid">
 							{% endif %}

@@ -37,7 +37,7 @@ class SearchFormType extends AbstractType
                 [
                     'required' => false,
                     'attr' => [
-                        'placeholder' => 'Capacité minimum',
+                        'placeholder' => 'Capacité min',
                     ],
                 ]
             )
@@ -47,7 +47,7 @@ class SearchFormType extends AbstractType
                 [
                     'required' => false,
                     'attr' => [
-                        'placeholder' => 'Capacité Maximum',
+                        'placeholder' => 'Capacité Max',
                     ],
                 ]
             )

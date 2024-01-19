@@ -62,12 +62,7 @@
 					<div class="mb-3">
 						<label for="">Equipements :</label>
 						<div class="text-danger">{{ form_errors(form.equipments) }}</div>
-						{% for equipment in form.equipments %}
-							<div class="form-check form-check-inline">
-								{{ form_widget(equipment, {'attr': {'class': 'form-check-input'}}) }}
-								<label class="form-check-label">{{ equipment.vars.label }}</label>
-							</div>
-						{% endfor %}
+						{{ form_widget(form.equipments, {'attr' : {'class': 'form-control,'}}) }}
 					</div>
 				</div>
 			</div>
@@ -191,10 +186,11 @@
 					</div>
 				</div>
 			{% endfor %}
-			{# display navigation
-																																																																																																																																																																																																																																																																																																																																																																																																																											<div class="mt-2 d-flex justify-content-center">
-																																																																																																																																																																																																																																																																																																																																																																																																																												{{ knp_pagination_render(agencies) }}
-																																																																																																																																																																																																																																																																																																																																																																																																																											</div> #}
+			{# display navigation #}
+			{# <div class="mt-2 d-flex justify-content-center">
+							{{ knp_pagination_render(reservations) }}
+						</div> #}
+
 		</div>
 	</div>
 {% endblock %}

@@ -6,11 +6,12 @@ use App\Entity\Search;
 use App\Entity\MeetingRoom;
 use App\Entity\Reservation;
 use App\Form\SearchFormType;
+use App\Service\MailerService;
 use App\Form\ReservationFormType;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\MeetingRoomRepository;
 use App\Repository\ReservationRepository;
-use App\Service\MailerService;
-use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,12 +22,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
     #[Route('/home', name: 'user.home.index')]
-    public function index(MeetingRoomRepository $meetingRoomRepository, Request $request): Response
+    public function index(MeetingRoomRepository $meetingRoomRepository, ReservationRepository $reservationRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $meetingrooms = $meetingRoomRepository->findAll();
         $search = new Search();
         $form = $this->createForm(SearchFormType::class, $search);
         $form->handleRequest($request);
-
         // Vérifier si le formulaire a été soumis ou non
         if ($form->isSubmitted() && $form->isValid()) {
             $meetingrooms = $meetingRoomRepository->Search($search);
@@ -40,6 +41,8 @@ class HomeController extends AbstractController
             [
                 'meetingrooms' => $meetingrooms,
                 'form' => $form->createView(),
+
+
             ]
         );
     }

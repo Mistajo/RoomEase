@@ -13,10 +13,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
 #[ORM\Entity(repositoryClass: SearchRepository::class)]
 class Search
 {
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    public int $page = 1;
 
     #[Assert\GreaterThanOrEqual(0)]
     #[ORM\Column(nullable: true)]
@@ -215,6 +219,31 @@ class Search
     public function setEquipments($equipments)
     {
         $this->equipments = $equipments;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of page
+     *
+     * @return int
+     */
+    public function getPage(): int
+    {
+        return $this->page;
+    }
+
+
+    /**
+     * Set the value of page
+     *
+     * @param int $page
+     *
+     * @return self
+     */
+    public function setPage(int $page): self
+    {
+        $this->page = $page;
 
         return $this;
     }
