@@ -7,6 +7,9 @@ use App\Entity\MeetingRoom;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Knp\Bundle\PaginatorBundle\Twig\Extension\PaginationExtension;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @extends ServiceEntityRepository<MeetingRoom>
@@ -18,9 +21,11 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  */
 class MeetingRoomRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $paginator;
+    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
     {
         parent::__construct($registry, MeetingRoom::class);
+        $this->paginator = $paginator;
     }
 
     //    /**
@@ -52,9 +57,9 @@ class MeetingRoomRepository extends ServiceEntityRepository
      * Recherche les salles de réunion correspondant aux paramètres de recherche
      *
      * @param Search $searchLes critères de recherche
-     * @return meetingRooms[] Les salles de réunion trouvées
+     * @return PaginationInterface Les salles de réunion trouvées
      */
-    public function search(Search $search, string $order = null): array
+    public function search(Search $search,): PaginationInterface
     {
         $qb = $this->createQueryBuilder('r')
             ->select('r', 'e')
@@ -70,7 +75,8 @@ class MeetingRoomRepository extends ServiceEntityRepository
         $this->applySearchFilters($qb, $search);
         // $this->applyOrder($qb, $order);
 
-        return $qb->getQuery()->getResult();
+        $query = $qb->getQuery();
+        return $this->paginator->paginate($query, $search->page, 6);
     }
 
     protected function applySearchFilters(QueryBuilder $qb, Search $search): void
@@ -80,7 +86,7 @@ class MeetingRoomRepository extends ServiceEntityRepository
                 ->setParameter('name', "%{$search->getName()}%");
         }
 
-        if ($search->getEquipments()->count() > 0) {
+        if ($search->getEquipments() != null && $search->getEquipments()->count() > 0) {
             $qb->andWhere('e.id IN (:equipments)')
                 ->setParameter('equipments', $search->getEquipments());
         }

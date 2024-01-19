@@ -24,22 +24,33 @@ class HomeController extends AbstractController
     #[Route('/home', name: 'user.home.index')]
     public function index(MeetingRoomRepository $meetingRoomRepository, ReservationRepository $reservationRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        $meetingrooms = $meetingRoomRepository->findAll();
         $search = new Search();
+        $search->page = $request->query->getInt('page', 1);
         $form = $this->createForm(SearchFormType::class, $search);
         $form->handleRequest($request);
-        // Vérifier si le formulaire a été soumis ou non
-        if ($form->isSubmitted() && $form->isValid()) {
-            $meetingrooms = $meetingRoomRepository->Search($search);
-        } else {
-            // Pas de formulaire soumis - récupérer toutes les salles
-            $meetingrooms = $meetingRoomRepository->findAll();
-        }
+        $meetingRooms = $meetingRoomRepository->search($search);
+
+        // // Paginer les salles de réunion
+        // $pagination = $paginator->paginate(
+        //     $meetingRoomRepository->findAll(), // Récupérer toutes les salles
+        //     $request->query->getInt('page', 1), // Numéro de page - par défaut la première page
+        //     6 // Nombre d'éléments par page
+        // );
+
+        // // Vérifier si le formulaire a été soumis ou non
+        // if ($form->isSubmitted() && $form->isValid()) {
+        //     // Paginer les salles de réunion trouvées avec la recherche
+        //     $pagination = $paginator->paginate(
+        //         $meetingRoomRepository->search($search), // Récupérer les salles correspondantes à la recherche
+        //         $request->query->getInt('page', 1), // Numéro de page - par défaut la première page
+        //         5 // Nombre d'éléments par page
+        //     );
+        // }
 
         return $this->render(
             'pages/user/home/index.html.twig',
             [
-                'meetingrooms' => $meetingrooms,
+                'meetingRooms' => $meetingRooms,
                 'form' => $form->createView(),
 
 

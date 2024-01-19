@@ -99,7 +99,8 @@
 
 
 		<div class="row">
-			{% for meetingroom in meetingrooms %}
+			{% for meetingroom in meetingRooms %}
+
 				<div class="col-md-6 mb-4 d-flex justify-content-center">
 					<div class="card mb-3 border shadow w-75 h-100">
 						<a href="#">
@@ -149,11 +150,14 @@
 
 				</div>
 			{% endfor %}
+			{# Afficher la pagination #}
+			<div class="mt-2 d-flex justify-content-center">
+				{{ knp_pagination_render(meetingRooms) }}
+
+
+			</div>
 
 		</div>
-		{# display navigation #}
-		{# <div class="mt-2 d-flex justify-content-center">
-															{{ knp_pagination_render(meet) }}
-														</div> #}
+
 	</div>
 {% endblock %}
