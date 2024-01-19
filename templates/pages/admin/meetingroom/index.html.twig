@@ -62,7 +62,12 @@
 					<div class="mb-3">
 						<label for="">Equipements :</label>
 						<div class="text-danger">{{ form_errors(form.equipments) }}</div>
-						{{ form_widget(form.equipments, {'attr' : {'class': 'form-control,'}}) }}
+						{% for e in form.equipments %}
+							<div class="form-check form-check-inline">
+								{{ form_widget(e, {'attr': {'class': 'form-check-input'}}) }}
+								<label class="form-check-label">{{ e.vars.label }}</label>
+							</div>
+						{% endfor %}
 					</div>
 				</div>
 			</div>
@@ -187,9 +192,9 @@
 				</div>
 			{% endfor %}
 			{# display navigation #}
-			{# <div class="mt-2 d-flex justify-content-center">
-							{{ knp_pagination_render(reservations) }}
-						</div> #}
+			<div class="mt-2 d-flex justify-content-center">
+				{{ knp_pagination_render(meetingrooms) }}
+			</div>
 
 		</div>
 	</div>

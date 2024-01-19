@@ -18,16 +18,11 @@ class WelcomeController extends AbstractController
     {
 
         $search = new Search();
+        $search->page = $request->query->getInt('page', 1);
         $form = $this->createForm(SearchFormType::class, $search);
         $form->handleRequest($request);
+        $meetingrooms = $meetingRoomRepository->search($search);
 
-        // Vérifier si le formulaire a été soumis ou non
-        if ($form->isSubmitted() && $form->isValid()) {
-            $meetingrooms = $meetingRoomRepository->Search($search);
-        } else {
-            // Pas de formulaire soumis - récupérer toutes les salles
-            $meetingrooms = $meetingRoomRepository->findAll();
-        }
         return $this->render('pages/visitor/welcome/index.html.twig', [
             'meetingrooms' => $meetingrooms,
             'form' => $form->createView(),

@@ -20,13 +20,10 @@ class MeetingRoomController extends AbstractController
     public function index(MeetingRoomRepository $meetingRoomRepository, Request $request): Response
     {
         $search = new Search();
+        $search->page = $request->query->getInt('page', 1);
         $form = $this->createForm(SearchFormType::class, $search);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $meetingrooms = $meetingRoomRepository->Search($search);
-        } else {
-            $meetingrooms = $meetingRoomRepository->findAll();
-        }
+        $meetingrooms = $meetingRoomRepository->search($search);
 
         return $this->render('pages/admin/meetingroom/index.html.twig', [
             'meetingrooms' => $meetingrooms,

@@ -30,22 +30,6 @@ class HomeController extends AbstractController
         $form->handleRequest($request);
         $meetingRooms = $meetingRoomRepository->search($search);
 
-        // // Paginer les salles de réunion
-        // $pagination = $paginator->paginate(
-        //     $meetingRoomRepository->findAll(), // Récupérer toutes les salles
-        //     $request->query->getInt('page', 1), // Numéro de page - par défaut la première page
-        //     6 // Nombre d'éléments par page
-        // );
-
-        // // Vérifier si le formulaire a été soumis ou non
-        // if ($form->isSubmitted() && $form->isValid()) {
-        //     // Paginer les salles de réunion trouvées avec la recherche
-        //     $pagination = $paginator->paginate(
-        //         $meetingRoomRepository->search($search), // Récupérer les salles correspondantes à la recherche
-        //         $request->query->getInt('page', 1), // Numéro de page - par défaut la première page
-        //         5 // Nombre d'éléments par page
-        //     );
-        // }
 
         return $this->render(
             'pages/user/home/index.html.twig',
