@@ -1,0 +1,43 @@
+{% extends 'themes/base_user.html.twig' %}
+
+{% block title %}
+	- Espace User - Confirmation de la reservation
+
+{% endblock %}
+
+
+{% block main %}
+	<h1 class="my-2 text-center">Récapitulatif de votre réservation</h1>
+
+	<div class="container">
+
+		<p>Merci de vérifier les informations suivantes avant de procéder au paiement :</p>
+
+		<div class="card mb-4">
+			<div class="card-body">
+				<h5 class="card-title">{{ reservation.title }}</h5>
+				<p class="card-text">Du
+					{{ reservation.startDate|date('d/m/Y H:i') }}
+					au
+					{{ reservation.endDate|date('d/m/Y H:i') }}</p>
+				<p class="card-text">
+					Total à payer :
+					{{ reservation.totalPrice }}
+					€
+				</p>
+			</div>
+		</div>
+
+		<a href="{{ path('user.reservation.edit', {'id': reservation.id}) }}" class="btn btn-link">Modifier la réservation</a>
+
+		<hr>
+
+		<div class="mb-3">
+			<a class='btn btn-primary' href="{{path('user.reservation.payment.stripe',{'reservationid':reservation.id})}}">Payer</a>
+
+		</div>
+
+	</div>
+
+
+{% endblock %}

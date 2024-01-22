@@ -100,10 +100,16 @@
 									</li>
 
 									{% if meetingroom.description is not empty %}
-										<p class="card-text">Description :
+										<li class="class=card-text">Description :
 											{{ meetingroom.description|striptags|u.truncate(70, '...')|raw }}
-										</p>
+										</li>
 									{% endif %}
+
+									<li>
+										Prix :
+										{{ meetingroom.price|format_currency('EUR', locale='de') }}
+
+									</li>
 
 									<li>
 										Equipements :

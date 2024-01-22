@@ -20,7 +20,7 @@ class ProfileController extends AbstractController
         return $this->render('pages/user/profile/index.html.twig');
     }
 
-    #[Route('/user/profile/edit', name: 'user.profile.edit', methods: ['GET', 'PUT'])]
+    #[Route('/profile/edit', name: 'user.profile.edit', methods: ['GET', 'PUT'])]
     public function edit(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();

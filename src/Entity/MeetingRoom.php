@@ -94,6 +94,11 @@ class MeetingRoom
     #[ORM\OneToMany(mappedBy: 'meetingroom', targetEntity: Statistic::class)]
     private Collection $statistics;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $price = null;
+
+
+
 
 
     public function __construct()
@@ -402,6 +407,18 @@ class MeetingRoom
                 $statistic->setMeetingroom(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?float $price): static
+    {
+        $this->price = $price;
 
         return $this;
     }

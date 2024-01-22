@@ -8,9 +8,11 @@ use App\Entity\Reservation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class ReservationFormType extends AbstractType
 {
@@ -24,7 +26,11 @@ class ReservationFormType extends AbstractType
                 ]
             ])
             ->add('startDate', DateTimeType::class, [])
-            ->add('endDate', DateTimeType::class, []);
+            ->add('endDate', DateTimeType::class, [])
+            ->add('dailyPrice', MoneyType::class, [
+                'currency' => 'EUR',
+            ])
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

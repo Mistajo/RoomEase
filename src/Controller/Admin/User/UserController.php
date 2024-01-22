@@ -18,15 +18,16 @@ class UserController extends AbstractController
     #[Route('/user/list', name: 'admin.user.index')]
     public function index(UserRepository $userRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        $user = $userRepository->findBy(
-            [],
-            ['createdAt' => 'DESC']
-        );
-        $users = $paginator->paginate(
-            $user,
-            $request->query->getInt('page', 1), /*page number*/
-            6 /*limit per page*/
-        );
+        $search = $request->query->get('search');
+
+        // Si un terme de recherche est saisi, filtrez la liste des utilisateurs
+        if ($search) {
+            $users = $userRepository->findBySearchTerm($search, $request->query->getInt('page', 1));
+        } else {
+            $users = $userRepository->findBy([], ['createdAt' => 'DESC']);
+            $users = $paginator->paginate($users, $request->query->getInt('page', 1), 6);
+        }
+
         return $this->render('pages/admin/user/index.html.twig', [
             "users" => $users,
         ]);

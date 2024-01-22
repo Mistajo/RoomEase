@@ -1,7 +1,7 @@
 {% extends 'themes/base_user.html.twig' %}
 
 {% block title %}
-	- Espace Utilisateur - Rseservation salle
+	- Espace Utilisateur - Modification Reservation salle
 {% endblock %}
 
 {% block main %}
@@ -55,79 +55,65 @@
 			<!--Fin Alerte Flash-->
 
 
-		</div>
-		<div class='text-center mb-2'>
-			{% if meetingroom.image %}
-				<img src="{{ vich_uploader_asset(meetingroom, 'imageFile') }}" alt="{{ meetingroom.name }}" class='h-50 w-50'>
-			{% else %}
-				<img src="{{asset('images/NoImage/No_Image.jpg')}}" alt="{{ meetingroom.description|striptags|u.truncate(30, '...')}}" class="h-50 w-50">
-			{% endif %}
-
-		</div>
-
-		<div class="row">
-			<div class="col-md-12">
-				{{ form_start(form) }}
-				<div class="row">
-					<div class="col-md-12 text-center">
-						{{ form_start(form) }}
-
-
-						<div class="mb-3">
-							<label for="">Date de Debut :</label>
-							<div class="text-danger">{{form_errors(form.startDate)}}</div>
-							{{form_widget(form.startDate,)}}
-						</div>
-						<div class="mb-3">
-							<label for="">Date de Fin :</label>
-							<div class="text-danger">{{form_errors(form.endDate)}}</div>
-							{{form_widget(form.endDate,)}}
-						</div>
-
-						<div class="mb-3">
-							<label for="">Titre de la Reservation :</label>
-							<div class="text-danger">{{form_errors(form.title)}}</div>
-							{{form_widget(form.title,)}}
-						</div>
-
-						<div class="col-md-6 ms-auto">
-
-							<div class="mb-3 w-50">
-								<label for="form_price">Prix à la journée</label>
-								<div class="text-danger">{{ form_errors(form.dailyPrice) }}</div>
-								{{ form_widget(form.dailyPrice, {'attr' : {'class': 'form-control', 'id': 'totalPrice' ,'readonly': 'readonly', "value" : meetingroom.price}}) }}
-							</div>
-
-						</div>
-
-
-						<div class="mb-3">
-							<input formnovalidate type="submit" class="btn btn-primary" value="valider">
-						</div>
-
-
-						{{ form_end(form) }}
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-7 mx-auto">
-						<div id="calendar"></div>
-					</div>
-				</div>
-
+			<div class='text-center mb-2'>
+				{% if meetingroom.image %}
+					<img src="{{ vich_uploader_asset(meetingroom, 'imageFile') }}" alt="{{ meetingroom.name }}" class='h-50 w-50'>
+				{% else %}
+					<img src="{{asset('images/NoImage/No_Image.jpg')}}" alt="{{ meetingroom.description|striptags|u.truncate(30, '...')}}" class="h-50 w-50">
+				{% endif %}
 
 			</div>
-		{% endblock %}
 
-		{% block javascripts %}
-			{{ parent() }}
+			<div class="row">
+				<div class="col-md-12">
+					{{ form_start(form) }}
+					<div class="row">
+						<div class="col-md-12 text-center">
+							{{ form_start(form) }}
 
-			<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
-			<script src='fullcalendar/core/index.global.js'></script>
-			<script src='fullcalendar/core/locales-all.global.js'></script>
+							<div class="mb-3">
+								<label for="">Date de Debut :</label>
+								<div class="text-danger">{{form_errors(form.startDate)}}</div>
+								{{form_widget(form.startDate,)}}
+							</div>
+							<div class="mb-3">
+								<label for="">Date de Fin :</label>
+								<div class="text-danger">{{form_errors(form.endDate)}}</div>
+								{{form_widget(form.endDate,)}}
+							</div>
 
-			<script>
-				document.addEventListener('DOMContentLoaded', function () {
+							<div class="mb-3">
+								<label for="">Titre de la Reservation :</label>
+								<div class="text-danger">{{form_errors(form.title)}}</div>
+								{{form_widget(form.title,)}}
+							</div>
+
+
+							<div class="mb-3">
+								<input formnovalidate type="submit" class="btn btn-primary" value="enregistrer">
+							</div>
+
+
+							{{ form_end(form) }}
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+
+	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+	<script src='fullcalendar/core/index.global.js'></script>
+	<script src='fullcalendar/core/locales-all.global.js'></script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
 var calendarEl = document.getElementById('calendar');
 
 var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -155,5 +141,5 @@ document.getElementById('reservation_form_endDate').value = info.endStr;
 });
 calendar.render();
 });
-			</script>
-		{% endblock %}
+	</script>
+{% endblock %}

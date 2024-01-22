@@ -74,6 +74,18 @@ class Reservation
     #[ORM\OneToMany(mappedBy: 'reservation', targetEntity: Statistic::class)]
     private Collection $statistics;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $totalPrice = null;
+
+    #[Assert\GreaterThan(0)]
+    #[ORM\Column(nullable: true)]
+    private ?float $dailyPrice = null;
+
+    #[ORM\OneToMany(mappedBy: 'reservation', targetEntity: Payment::class)]
+    private Collection $payments;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $paymentStatus = null;
 
 
 
@@ -81,6 +93,7 @@ class Reservation
     {
         $this->statut = "En Attente";
         $this->statistics = new ArrayCollection();
+        $this->payments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -210,6 +223,80 @@ class Reservation
                 $statistic->setReservation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTotalPrice(): ?float
+    {
+        return $this->totalPrice;
+    }
+
+    public function setTotalPrice(?float $totalPrice): static
+    {
+        $this->totalPrice = $totalPrice;
+
+        return $this;
+    }
+
+    public function getDailyPrice(): ?float
+    {
+        return $this->dailyPrice;
+    }
+
+    public function setDailyPrice(?float $dailyPrice): static
+    {
+        $this->dailyPrice = $dailyPrice;
+
+        return $this;
+    }
+
+    public function calculateTotalPrice()
+    {
+        $diff = $this->endDate->diff($this->startDate);
+        $nbJours = $diff->days;
+
+        return $this->dailyPrice * $nbJours;
+    }
+
+    /**
+     * @return Collection<int, Payment>
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): static
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments->add($payment);
+            $payment->setReservation($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayment(Payment $payment): static
+    {
+        if ($this->payments->removeElement($payment)) {
+            // set the owning side to null (unless already changed)
+            if ($payment->getReservation() === $this) {
+                $payment->setReservation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPaymentStatus(): ?string
+    {
+        return $this->paymentStatus;
+    }
+
+    public function setPaymentStatus(?string $paymentStatus): static
+    {
+        $this->paymentStatus = $paymentStatus;
 
         return $this;
     }

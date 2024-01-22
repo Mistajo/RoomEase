@@ -130,7 +130,7 @@
 
 			{% for meetingroom in meetingrooms %}
 				<div class="col-md-4 mb-4 d-flex justify-content-center">
-					<div class="card mb-3 border shadow w-75 h-100">
+					<div class="card mb-3 border shadow w-75 h-100 rounded-5">
 						<a href="#">
 							{% if meetingroom.image %}
 								<img src="{{ vich_uploader_asset(meetingroom, 'imageFile') }}" alt="{{ meetingroom.name }}" class='card-img-top img-fluid'>
