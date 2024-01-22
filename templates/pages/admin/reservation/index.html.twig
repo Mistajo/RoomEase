@@ -6,6 +6,19 @@
 
 
 {% block main %}
+
+	<!-- Breadcrumb-->
+	<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class='mx-5 mt-5'>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a href="{{path('admin.home.dashboard')}}">Tableau de bord</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">Liste des réservations</li>
+		</ol>
+	</nav>
+	<!-- Fin Breadcrumb-->
+
+
 	<h1 class="text-secondary text-center my-3 display-5">Liste des Reservations</h1>
 
 

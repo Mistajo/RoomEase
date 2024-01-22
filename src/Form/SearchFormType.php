@@ -20,7 +20,7 @@ class SearchFormType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'attr' => [
-                    'placeholder' => 'Rechercher',
+                    'placeholder' => 'Rechercher nom de la salle',
                 ],
                 'required' => false,
             ])
@@ -57,7 +57,7 @@ class SearchFormType extends AbstractType
                 [
                     'required' => false,
                     'attr' => [
-                        'placeholder' => 'Prix Minimum',
+                        'placeholder' => 'Prix Min',
                     ],
                 ]
             )
@@ -67,7 +67,7 @@ class SearchFormType extends AbstractType
                 [
                     'required' => false,
                     'attr' => [
-                        'placeholder' => 'Prix Maximum',
+                        'placeholder' => 'Prix Max',
                     ],
                 ]
             );

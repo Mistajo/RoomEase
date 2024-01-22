@@ -6,7 +6,7 @@
 		</button>
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav me-auto">
+			<ul class="navbar-nav ms-auto">
 				<li class="nav-item">
 					<a class="nav-link active text-white" aria-current="page" href="{{path('visitor.welcome.index')}}">Accueil</a>
 				</li>
@@ -17,10 +17,6 @@
 					<a class="nav-link text-white" href="{{path('visitor.contact.create')}}">Contact</a>
 				</li>
 			</ul>
-			<form class="d-flex me-auto" role="search">
-				<input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
-				<button class="btn btn-outline-success" type="submit">Rechercher</button>
-			</form>
 			<div class="ms-auto">
 				{% if app.user %}
 					<ul class="navbar-nav">
