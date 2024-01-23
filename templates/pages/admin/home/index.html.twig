@@ -11,20 +11,30 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-md-6">
 
+			<div class="col-md-6">
+				<h3>Montant Total Des Reservations</h3>
+
+				{{ render_chart(chart3) }}
+			</div>
+
+			<div class="col-md-6">
+				<h3>Montant de Réservations par utilisateur</h3>
 				{{ render_chart(chart) }}
 			</div>
-			<div class="col-md-6">
 
+			<div class="col-md-6">
+				<h3>Nombre de Réservations Par Salle</h3>
 				{{ render_chart(chart2) }}
+			</div>
+
+			<div class="col-md-6">
+				<h3>Nombre de Personnes Par Salle Maximum</h3>
+				{{ render_chart(chart4) }}
 			</div>
 
 		</div>
 
 	</div>
-	<pre>
-		{{ dump() }}
-	</pre>
 
 {% endblock %}

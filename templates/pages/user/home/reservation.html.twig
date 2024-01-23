@@ -93,7 +93,7 @@
 						<div class="col-md-6 ms-auto">
 
 							<div class="mb-3 w-50">
-								<label for="form_price">Prix à la journée</label>
+								<label for="form_price">Prix/Heure</label>
 								<div class="text-danger">{{ form_errors(form.dailyPrice) }}</div>
 								{{ form_widget(form.dailyPrice, {'attr' : {'class': 'form-control', 'id': 'totalPrice' ,'readonly': 'readonly', "value" : meetingroom.price}}) }}
 							</div>

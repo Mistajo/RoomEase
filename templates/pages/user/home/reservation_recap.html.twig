@@ -28,14 +28,13 @@
 			</div>
 		</div>
 
-		<a href="{{ path('user.reservation.edit', {'id': reservation.id}) }}" class="btn btn-link">Modifier la réservation</a>
-
-		<hr>
-
 		<div class="mb-3">
 			<a class='btn btn-primary' href="{{path('user.reservation.payment.stripe',{'reservationid':reservation.id})}}">Payer</a>
 
 		</div>
+
+		<hr>
+
 
 	</div>
 

@@ -42,6 +42,10 @@
 				{{ meetingroom.description }}
 			</p>
 		{% endif %}
+		<p>
+			Prix/Heure :
+			{{ meetingroom.price|format_currency('EUR', locale='fr')}}
+		</p>
 		<p class="card-text">Equipements :
 			{% if meetingroom.equipment is empty %}
 				<p>---</p>

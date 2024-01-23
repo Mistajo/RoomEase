@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -20,6 +21,7 @@ class MeetingRoomFormType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('Capacity', NumberType::class)
+            ->add('price', MoneyType::class)
             ->add('equipment', EntityType::class, [
                 // looks for choices from this entity
                 'class' => Equipment::class,

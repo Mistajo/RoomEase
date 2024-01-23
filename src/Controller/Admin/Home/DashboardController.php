@@ -8,6 +8,7 @@ use Symfony\UX\Chartjs\Model\Chart;
 use App\Repository\MeetingRoomRepository;
 use App\Repository\ReservationRepository;
 use App\Repository\StatisticRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
@@ -18,72 +19,118 @@ class DashboardController extends AbstractController
 {
     #[Route('/home/dashboard', name: 'admin.home.dashboard')]
 
-    public function index(MeetingRoomRepository $meetingRoomRepository, ReservationRepository $reservationRepository, ChartBuilderInterface $chartBuilder, StatisticService $statisticService, StatisticRepository $statisticRepository): Response
+    public function index(MeetingRoomRepository $meetingRoomRepository, UserRepository $userRepository, ReservationRepository $reservationRepository, ChartBuilderInterface $chartBuilder, StatisticService $statisticService, StatisticRepository $statisticRepository): Response
     {
-
 
         $statistics = $statisticRepository->findAll();
         $reservations = $reservationRepository->findAll();
         $meetingRooms = $meetingRoomRepository->findAll();
+        $users = $userRepository->findAll();
 
-        $labels = [];
-        $data = [];
+        // Nombre de réservations par utilisateur
+        $userLabels = [];
+        $userReservations = [];
 
-        foreach ($reservations as $reservation) {
-            $labels[] = $reservation->getStartDate()->format('Y-m-d');
-            $data[] = $reservation->getMeetingRoom()->getCapacity();
+        foreach ($users as $user) {
+            $userLabels[] = $user->getLastName();
+            $userReservations[] = 0;
         }
+
+        foreach ($userReservations as $key => $userReservation) {
+            foreach ($reservations as $reservation) {
+                if ($reservation->getUser() === $users[$key]) {
+                    $userReservations[$key]++;
+                }
+            }
+        }
+
         $chart = $chartBuilder->createChart(Chart::TYPE_BAR);
         $chart->setData([
-            'labels' => $labels,
+            'labels' => $userLabels,
             'datasets' => [
                 [
-                    'label' => 'Reservations',
-                    'backgroundColor' => '#79f879',
-                    'data' => $data,
-                ],
-            ],
-        ]);
-        $chart->setOptions([
-            'scales' => [
-                'y' => [
-                    'suggestedMin' => 0,
-                    'suggestedMax' => 100,
+                    'label' => 'Nombre de réservations par utilisateur',
+                    'backgroundColor' => '#79f8f8',
+                    'data' => $userReservations,
                 ],
             ],
         ]);
 
+        //Nombre de réservations par salle
+        $labels2 = [];
+        $datas2 = [];
 
-
-        $labels1 = [];
-        $values1 = [];
-
-        foreach ($statistics as $statistic) {
-
-            $meetingroomEntity = $statistic->getMeetingroom();
-            $labels1[] = $meetingroomEntity->getName();
-            $values1[] = $statistic->getCount();
+        foreach ($meetingRooms as $meetingRoom) {
+            $labels2[] = $meetingRoom->getName();
+            $datas2[] = 0;
         }
 
-        // Construction du graphique
+        foreach ($datas2 as $key => $data2) {
+            foreach ($reservations as $reservation) {
+                if ($reservation->getMeetingroom() === $meetingRooms[$key]) {
+                    $datas2[$key]++;
+                }
+            }
+        }
+
         $chart2 = $chartBuilder->createChart(Chart::TYPE_BAR);
         $chart2->setData([
-            'labels' => $labels1,
+            'labels' => $labels2,
             'datasets' => [
                 [
-                    'label' => 'Nombre de réservations',
-                    'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
-                    'borderColor' => 'rgb(255, 99, 132)',
-                    'borderWidth' => 1,
-                    'data' => $values1,
+                    'label' => 'Nombre de réservations par salle',
+                    'backgroundColor' => '#F7931E',
+                    'data' => $datas2,
                 ],
             ],
         ]);
-        $chart->setOptions([
-            'scales' => [
-                'y' => [
-                    'suggestedMin' => 0,
-                    'suggestedMax' => 100,
+
+        // Montant total des réservations
+
+        $stats = [
+            'total' => 0,
+            'paid' => 0,
+            'unpaid' => 0,
+        ];
+
+        foreach ($reservations as $reservation) {
+            $stats['total'] += $reservation->getTotalPrice();
+            if ($reservation->getPaymentStatus() == 'Payée') {
+                $stats['paid'] += $reservation->getTotalPrice();
+            } else {
+                $stats['unpaid'] += $reservation->getTotalPrice();
+            }
+        }
+        $chart3 = $chartBuilder->createChart(Chart::TYPE_BAR);
+        $chart3->setData([
+            'labels' => ['Payée', 'Non payée'],
+            'datasets' => [
+                [
+                    'label' => 'Montants en €',
+                    'backgroundColor' => ['#00ff00', '#ff0000'],
+                    'data' => [$stats['paid'], $stats['unpaid']],
+                ],
+            ],
+        ]);
+
+
+        //capacité par salle
+        $salleLabels = [];
+        $salleCapacites = [];
+
+        foreach ($meetingRooms as $meetingroom) {
+            $salleLabels[] = $meetingroom->getName();
+            $salleCapacites[] = $meetingroom->getCapacity();
+        }
+
+        $chart4 = $chartBuilder->createChart(Chart::TYPE_LINE);
+        $chart4->setData([
+            'labels' => $salleLabels,
+            'datasets' => [
+                [
+                    'label' => 'Capacité par salle',
+                    'backgroundColor' => '#f879f8',
+                    'data' => $salleCapacites,
                 ],
             ],
         ]);
@@ -93,6 +140,8 @@ class DashboardController extends AbstractController
         return $this->render('pages/admin/home/index.html.twig', [
             'chart' => $chart,
             'chart2' => $chart2,
+            'chart3' => $chart3,
+            'chart4' => $chart4,
         ]);
     }
 }

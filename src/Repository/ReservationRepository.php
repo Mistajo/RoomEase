@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\MeetingRoom;
 use App\Entity\Reservation;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
@@ -17,9 +18,11 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  */
 class ReservationRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $paginator;
+    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
     {
         parent::__construct($registry, Reservation::class);
+        $this->paginator = $paginator;
     }
 
     //    /**
@@ -56,5 +59,24 @@ class ReservationRepository extends ServiceEntityRepository
             ->getQuery();
 
         return $query->getResult();
+    }
+
+    public function search($text, $page = 1, $perPage = 6)
+    {
+        $qb = $this->createQueryBuilder('r');
+        $qb->leftJoin('r.meetingroom', 'mr');
+        $qb->leftJoin('r.user', 'ur')
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->like('r.id', ':text'),
+                    $qb->expr()->like('r.title', ':text'),
+                    $qb->expr()->like('mr.name', ':text'),
+                    $qb->expr()->like('ur.lastName', ':text'),
+                    $qb->expr()->like('ur.firstName', ':text')
+                )
+            )->setParameter(':text', '%' . $text . '%');
+
+        $query = $qb->getQuery();
+        return $this->paginator->paginate($query, $page, $perPage);
     }
 }

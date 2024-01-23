@@ -44,60 +44,84 @@
 
 		<!--Fin Alerte Flash-->
 
-		<div
-			class="row">
-			<!-- Card Creation nouveau equipement-->
-			<div class="col-md-4 my-2 gap-1 rounded-5 shadow">
-				<a class=" text-decoration-none" href="{{path('admin.equipments.create')}}">
-					<div class="card mb-3">
-						<div class="card-body text-center">
-							<i class="fa-solid fa-plus text-center-black mt-5"></i>
-							<h5 class="card-title text-center-black  ">Créer un equipement</h5>
-						</div>
+		<div class="row">
+
+			<div class="col-md-3">
+				<form method="get" action="{{ path('admin.equipments.index') }}">
+					<input type="text" id="search" name="search" placeholder="Rechercher un equipement..." class=' rounded-5'>
+					<div class='mt-1'>
+						<button type="submit" class="btn btn-primary rounded-5" title="Rechercher">
+							<i class="fa-solid fa-magnifying-glass"></i>
+							Rechercher</button>
+						<a href="{{path('admin.equipments.index')}}" class='btn btn-secondary rounded-5' title='Effacer'>Effacer</a>
 					</div>
-				</a>
+				</form>
 			</div>
-			<!-- Fin Card Creation nouveau equipement-->
 
 
-			<!-- Card Pour les nouveaux equipements -->
+			<div class="col-md-9">
+				<div
+					class="row">
 
-			{% for equipment in equipments %}
-				<div class="col-md-4 my-2 gap-1 rounded-5 shadow">
-
-					<div class="card mb-3">
-						<div class="card-body text-center">
-							<h5 class="card-title">
-								<strong>
-									{{equipment.name}}
-								</strong>
-							</h5>
-							<!-- Boutton  -->
-							<div class="d-flex justify-content-between align-items-center gap-1">
-								<a href="{{path('admin.equipments.edit', {'id' : equipment.id})}}" class="btn btn-secondary">Modifier</a>
-								<a href="#" class="btn btn-danger ms-auto" onclick="event.preventDefault(); return confirm('Voulez vous vraiment supprimer cet equipement?') && document.querySelector('#form_delete_equipment_{{equipment.id}}').submit()" title="Supprimer">Supprimer</a>
-								<form method="POST" id="form_delete_equipment_{{equipment.id}}" action="{{path('admin.equipments.delete', {'id': equipment.id})}}">
-									<input type="hidden" name="csrf_token" value="{{csrf_token('delete_equipment_'~equipment.id)}}">
-									<input type="hidden" name="_method" value="delete">
-								</form>
+					<!-- Card Creation nouveau equipement-->
+					<div class="col-md-4 my-2 gap-1 rounded-5 shadow">
+						<a class=" text-decoration-none" href="{{path('admin.equipments.create')}}">
+							<div class="card mb-3">
+								<div class="card-body text-center">
+									<i class="fa-solid fa-plus text-center-black mt-5"></i>
+									<h5 class="card-title text-center-black  ">Créer un equipement</h5>
+								</div>
 							</div>
-							<!-- Fin boutton -->
-
-							<p class="card-text d-flex justify-content-between">
-								<small class="text-body-secondary">Créer
-									{{equipment.createdAt|ago}}</small>
-
-								<small class="text-body-secondary">Modifié
-									{{equipment.updatedAt|ago}}</small>
-							</p>
-
-						</div>
+						</a>
 					</div>
+					<!-- Fin Card Creation nouveau equipement-->
+
+
+					<!-- Card Pour les nouveaux equipements -->
+
+					{% for equipment in equipments %}
+						<div class="col-md-4 my-2 gap-1 rounded-5 shadow">
+
+							<div class="card mb-3">
+								<div class="card-body text-center">
+									<h5 class="card-title">
+										<strong>
+											{{equipment.name}}
+										</strong>
+									</h5>
+									<!-- Boutton  -->
+									<div class="d-flex justify-content-between align-items-center gap-1">
+										<a href="{{path('admin.equipments.edit', {'id' : equipment.id})}}" class="btn btn-secondary">Modifier</a>
+										<a href="#" class="btn btn-danger ms-auto" onclick="event.preventDefault(); return confirm('Voulez vous vraiment supprimer cet equipement?') && document.querySelector('#form_delete_equipment_{{equipment.id}}').submit()" title="Supprimer">Supprimer</a>
+										<form method="POST" id="form_delete_equipment_{{equipment.id}}" action="{{path('admin.equipments.delete', {'id': equipment.id})}}">
+											<input type="hidden" name="csrf_token" value="{{csrf_token('delete_equipment_'~equipment.id)}}">
+											<input type="hidden" name="_method" value="delete">
+										</form>
+									</div>
+									<!-- Fin boutton -->
+
+									<p class="card-text d-flex justify-content-between">
+										<small class="text-body-secondary">Créer
+											{{equipment.createdAt|ago}}</small>
+
+										<small class="text-body-secondary">Modifié
+											{{equipment.updatedAt|ago}}</small>
+									</p>
+
+								</div>
+							</div>
+						</div>
+
+
+					{% endfor %}
+					<!-- Fin Card pour les nouvelles categories -->
+				</div>
+				{# display navigation #}
+				<div class="mt-2 d-flex justify-content-center">
+					{{ knp_pagination_render(equipments) }}
 				</div>
 
-
-			{% endfor %}
-			<!-- Fin Card pour les nouvelles categories -->
+			</div>
 		</div>
 
 

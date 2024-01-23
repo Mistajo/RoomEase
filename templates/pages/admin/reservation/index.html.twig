@@ -34,64 +34,98 @@
 	<div class="container mt-5">
 
 		<div class="row">
-			{% if reservations is empty %}
-				<p class="text-center mt-5">Aucune Reservation pour l'instant</p>
-			{% else %}
-				{% for reservation in reservations %}
-					<div class="col-md-6 mb-4 ">
-						<div class="card mb-3 border shadow w-75 h-100">
-							{% if reservation.meetingroom.image %}
-								<img src="{{ vich_uploader_asset(reservation.meetingroom, 'imageFile')}}" class="w-100 h-100 rounded" alt="{{ reservation.meetingroom.name }}">
-							{% else %}
-								<img src="{{asset('images/NoImage/No_Image.jpg')}}" alt="{{ meetingroom.description|striptags|u.truncate(30, '...')}}" class="card-img-top img-fluid">
-							{% endif %}
-							<div class="card-body w-75 h-100">
-
-								<h5 class="card-title">
-									<strong>
-										Numéro de Réservation :
-									</strong>
-									{{reservation.Id |u.truncate(70, '...')|raw}}</h5>
-								<p class="card-text">
-									<strong>Nom de la salle :</strong>
-									{{reservation.meetingroom.name |u.truncate(70, '...')|raw}}
-								</p>
-								<p class="card-text">
-									<strong>Nom de la réservation :</strong>
-									{{reservation.title |u.truncate(70, '...')|raw}}
-								</p>
-								<p class="card-text">
-									<strong>Date de Début :</strong>
-									{{reservation.startDate |format_datetime(locale='fr')}}
-								</p>
-								<p class="card-text">
-									<strong>Date de Fin :</strong>
-									{{reservation.endDate |format_datetime(locale='fr')}}
-								</p>
-								<p class="card-text">
-									<strong>Statut :</strong>
-									{% if reservation.statut == 'Reservé'  %}
-										<span class="badge text-bg-success">{{reservation.statut}}</span>
-									{% else %}
-										<span class="badge text-bg-danger">{{reservation.statut}}</span>
-									{% endif %}
-								</p>
-								{% if reservation.statut == 'Reservé'  %}
-									<a href="{{path('user.reservation.delete',{'id': reservation.id})}}" class="btn btn-danger">Annuler la commande</a>
-								{% endif %}
-								<p class="card-text">
-									<small class="text-body-secondary">Validé
-										{{reservation.createdAt|ago}}</small>
-								</p>
-							</div>
-						</div>
+			<div class="col-md-3">
+				<form method="get" action="{{ path('admin.reservation.index') }}">
+					<input type="text" id="search" name="search" placeholder="Rechercher..." class=' rounded-5'>
+					<div class='mt-1'>
+						<button type="submit" class="btn btn-primary rounded-5" title="Rechercher">
+							<i class="fa-solid fa-magnifying-glass"></i>
+							Rechercher</button>
+						<a href="{{path('admin.reservation.index')}}" class='btn btn-secondary rounded-5' title='Effacer'>Effacer</a>
 					</div>
-				{% endfor %}
-				{# display navigation #}
-				<div class="mt-2 d-flex justify-content-center">
-					{{ knp_pagination_render(reservations) }}
+				</form>
+			</div>
+
+			<div class="col-md-9 mt-3">
+				<div class="row">
+					{% if reservations is empty %}
+						<p class="text-center mt-5">Aucune Reservation pour l'instant</p>
+					{% else %}
+						{% for reservation in reservations %}
+							<div class="col-md-6 mb-4 ">
+								<div class="card mb-3 border shadow w-auto h-auto">
+									{% if reservation.meetingroom.image %}
+										<img src="{{ vich_uploader_asset(reservation.meetingroom, 'imageFile')}}" class="w-100 h-100 rounded" alt="{{ reservation.meetingroom.name }}">
+									{% else %}
+										<img src="{{asset('images/NoImage/No_Image.jpg')}}" alt="{{ meetingroom.description|striptags|u.truncate(30, '...')}}" class="card-img-top img-fluid">
+									{% endif %}
+									<div class="card-body w-75 h-100">
+
+										<h5 class="card-title">
+											<strong>
+												Numéro de Réservation :
+											</strong>
+											{{reservation.Id |u.truncate(70, '...')|raw}}</h5>
+										<p class="card-text">
+											<strong>Nom de l'utilisateur :</strong>
+											{{reservation.user.firstName }}
+											{{reservation.user.lastName}}
+										</p>
+										<p class="card-text">
+											<strong>Nom de la salle :</strong>
+											{{reservation.meetingroom.name |u.truncate(70, '...')|raw}}
+										</p>
+										<p class="card-text">
+											<strong>Nom de la réservation :</strong>
+											{{reservation.title |u.truncate(70, '...')|raw}}
+										</p>
+										<p class="card-text">
+											<strong>Date de Début :</strong>
+											{{reservation.startDate |format_datetime(locale='fr')}}
+										</p>
+										<p class="card-text">
+											<strong>Date de Fin :</strong>
+											{{reservation.endDate |format_datetime(locale='fr')}}
+										</p>
+										<p class="card-text">
+											<strong>Montant de la réservation :</strong>
+											{{reservation.totalPrice|format_currency('EUR', locale='fr')}}
+										</p>
+										<p class="card-text">
+											<strong>Statut du Paiement :</strong>
+											{% if reservation.paymentStatus == 'Payée'  %}
+												<span class="badge text-bg-success">{{reservation.paymentStatus}}</span>
+											{% else %}
+												<span class="badge text-bg-danger">Pas Payée</span>
+
+											{% endif %}
+										</p>
+										<p class="card-text">
+											<strong>Statut :</strong>
+											{% if reservation.statut == 'Reservé'  %}
+												<span class="badge text-bg-success">{{reservation.statut}}</span>
+											{% else %}
+												<span class="badge text-bg-danger">{{reservation.statut}}</span>
+											{% endif %}
+										</p>
+										{% if reservation.statut == 'Reservé'  %}
+											<a href="{{path('user.reservation.delete',{'id': reservation.id})}}" class="btn btn-danger">Annuler la commande</a>
+										{% endif %}
+										<p class="card-text">
+											<small class="text-body-secondary">Validé
+												{{reservation.createdAt|ago}}</small>
+										</p>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+						{# display navigation #}
+						<div class="mt-2 d-flex justify-content-center">
+							{{ knp_pagination_render(reservations) }}
+						</div>
+					{% endif %}
 				</div>
-			{% endif %}
+			</div>
 		</div>
 
 	</div>

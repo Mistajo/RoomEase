@@ -10,6 +10,7 @@ use App\Form\MeetingRoomFormType;
 use App\Repository\EquipmentRepository;
 use App\Repository\EquipmentsRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,10 +20,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class EquipmentController extends AbstractController
 {
     #[Route('/equipments/list', name: 'admin.equipments.index')]
-    public function index(EquipmentRepository $equipmentRepository): Response
+    public function index(EquipmentRepository $equipmentRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $search = $request->query->get('search');
+
+        // Si un terme de recherche est saisi, filtrez la liste des utilisateurs
+        if ($search) {
+            $equipments = $equipmentRepository->findBySearchTerm($search, $request->query->getInt('page', 1));
+        } else {
+            $equipments = $equipmentRepository->findBy([], ['createdAt' => 'DESC']);
+            $equipments = $paginator->paginate($equipments, $request->query->getInt('page', 1), 6);
+        }
+
+
         return $this->render('pages/admin/equipment/index.html.twig', [
-            'equipments' => $equipmentRepository->findAll(),
+            'equipments' => $equipments,
         ]);
     }
 

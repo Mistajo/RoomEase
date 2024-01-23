@@ -21,16 +21,15 @@ class ReservationController extends AbstractController
     #[Route('/reservation', name: 'user.reservation.index')]
     public function index(ReservationRepository $reservationRepository, MeetingRoomRepository $meetingRoomRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        $reservation = $reservationRepository->findBy(
-            ['user' => $this->getUser()],
-            ['createdAt' => 'DESC']
-        );
-        $reservations = $paginator->paginate(
-            $reservation,
+        $search = $request->query->get('search');
 
-            $request->query->getInt('page', 1), /*page number*/
-            2/*limit per page*/
-        );
+        // Si un terme de recherche est saisi, filtrez la liste des utilisateurs
+        if ($search) {
+            $reservations = $reservationRepository->search($search, $request->query->getInt('page', 1));
+        } else {
+            $reservations = $reservationRepository->findBy([], ['createdAt' => 'DESC']);
+            $reservations = $paginator->paginate($reservations, $request->query->getInt('page', 1), 6);
+        }
         return $this->render('pages/user/reservation/index.html.twig', [
             'reservations' => $reservations,
             'meetingRooms' => $meetingRoomRepository->findAll(),

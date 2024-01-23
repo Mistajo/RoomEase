@@ -91,6 +91,7 @@ class Reservation
 
     public function __construct()
     {
+        $this->paymentStatus = "Pas Payée";
         $this->statut = "En Attente";
         $this->statistics = new ArrayCollection();
         $this->payments = new ArrayCollection();
@@ -254,9 +255,9 @@ class Reservation
     public function calculateTotalPrice()
     {
         $diff = $this->endDate->diff($this->startDate);
-        $nbJours = $diff->days;
+        $nbHours = $diff->h + ($diff->days * 24);
 
-        return $this->dailyPrice * $nbJours;
+        return $this->dailyPrice * $nbHours;
     }
 
     /**

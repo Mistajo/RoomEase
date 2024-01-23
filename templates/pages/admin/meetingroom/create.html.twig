@@ -58,6 +58,14 @@
 			</div>
 			<!-- Fin Capacité -->
 
+			<!-- Prix -->
+			<div class="mb-3">
+				<label for="">Prix/Heure :</label>
+				<div class="text-danger">{{form_errors(form.price)}}</div>
+				{{form_widget(form.price, {'attr': {'class': 'form-control'}})}}
+			</div>
+			<!-- Fin Prix -->
+
 			<!-- Description -->
 			<div class="mb-3">
 				<label for="">Description :</label>

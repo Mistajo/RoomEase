@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Equipment;
 use App\Entity\Equipments;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
@@ -17,9 +18,11 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  */
 class EquipmentRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $paginator;
+    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
     {
         parent::__construct($registry, Equipment::class);
+        $this->paginator = $paginator;
     }
 
     //    /**
@@ -46,4 +49,18 @@ class EquipmentRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function findBySearchTerm($term, $page = 1, $perPage = 6)
+    {
+        $qb = $this->createQueryBuilder('e');
+
+        if (is_string($term) && !empty(trim($term))) {
+            $qb->andWhere('e.name LIKE :term')
+                ->setParameter('term', "%$term%");
+        }
+
+
+        $query = $qb->getQuery();
+        return $this->paginator->paginate($query, $page, $perPage);
+    }
 }
