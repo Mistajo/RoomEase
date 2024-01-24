@@ -167,12 +167,10 @@
 								{% endfor %}
 							</li>
 
-							<p class="card-text d-flex justify-content-between gap-2 my-2"></p>
 
 							<a href="{{path('admin.meetingroom.edit', {'id': meetingroom.id})}}" class="btn btn-primary my-1">Modifier</a>
 
 							<a href="{{path('admin.meetingroom.show', {'id' : meetingroom.id})}}" class="btn btn-secondary my-1">Voir Plus</a>
-
 
 							<a href="#" class="btn btn-danger my-1" onclick="event.preventDefault(); return confirm('Voulez vous vraiment supprimer cette salle?') && document.querySelector('#form_delete_meetingroom_{{meetingroom.id}}').submit()" title="Supprimer">Supprimer</a>
 							<form method="POST" id="form_delete_meetingroom_{{meetingroom.id}}" action="{{path('admin.meetingroom.delete', {'id':meetingroom.id})}}">
@@ -181,25 +179,24 @@
 								<input type="hidden" name="_method" value="delete">
 							</form>
 
-						</p>
 
+							<p class="card-text d-flex justify-content-between mt-3">
+								<small class="text-body-secondary">Créer
+									{{meetingroom.createdAt|ago}}</small>
 
-						<p class="card-text d-flex justify-content-between mt-3">
-							<small class="text-body-secondary">Créer
-								{{meetingroom.createdAt|ago}}</small>
+								<small class="text-body-secondary">Modifié
+									{{meetingroom.updatedAt|ago}}</small>
+							</p>
 
-							<small class="text-body-secondary">Modifié
-								{{meetingroom.updatedAt|ago}}</small>
-						</p>
-
+						</div>
 					</div>
 				</div>
+			{% endfor %}
+			{# display navigation #}
+			<div class="mt-2 d-flex justify-content-center">
+				{{ knp_pagination_render(meetingrooms) }}
 			</div>
-		{% endfor %}
-		{# display navigation #}
-		<div class="mt-2 d-flex justify-content-center">
-			{{ knp_pagination_render(meetingrooms) }}
-		</div>
 
+		</div>
 	</div>
-</div>{% endblock %}
+{% endblock %}

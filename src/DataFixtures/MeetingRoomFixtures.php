@@ -87,7 +87,7 @@ class MeetingRoomFixtures extends Fixture
             $meetingrooms[$i] = new MeetingRoom();
             $meetingrooms[$i]->setName($faker->unique()->word);
             $meetingrooms[$i]->setCapacity($faker->numberBetween(5, 500));
-            $meetingrooms[$i]->setPrice($faker->numberBetween(150, 300));
+            $meetingrooms[$i]->setPrice($faker->numberBetween(100, 150));
             $meetingrooms[$i]->setDescription($faker->realText(500));
             $meetingrooms[$i]->setIsAvailable(true);
 
