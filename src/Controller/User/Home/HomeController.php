@@ -200,7 +200,7 @@ class HomeController extends AbstractController
         if (!$reservation) {
             throw $this->createNotFoundException("La réservation demandée n'existe pas.");
         }
-        Stripe::setApiKey(apiKey: 'sk_test_51OEv73JVomzWvXK9tsoMDu8vvpeHmD4gE1VMlBS0LgD43FHop2HztLMJwCr38Rl2ayVLvYUMpskFUwjDUzkkDAIi00UQjjay9u');
+        Stripe::setApiKey($_ENV['Stripe_API_SECRET']);
         $price = Price::create([
             'unit_amount' => $reservation->getTotalPrice() * 100, // Total amount multiplied by 100 (in cents)
             'currency' => 'EUR', // Use your preferred currency (e.g., 'eur', 'usd')
