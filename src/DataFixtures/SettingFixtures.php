@@ -18,7 +18,7 @@ class SettingFixtures extends Fixture
     private function createSetting(): Setting
     {
         $setting = new Setting();
-        $setting->setEmail('roomease@gmail.com');
+        $setting->setEmail('roomease8@gmail.com');
         $setting->setPhone('01 46 01 02 03');
 
         return $setting;

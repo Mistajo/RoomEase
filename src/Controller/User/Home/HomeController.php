@@ -94,6 +94,21 @@ class HomeController extends AbstractController
             $endDate = $reservation->getEndDate();
             $meetingRoomId = $meetingroom->getId();
 
+            // vérification de l'heure de début
+            $startHour = $startDate->format('H');
+            if ($startHour < 7 || $startHour >= 19) {
+                // l'heure de début n'est pas valide
+                throw new \Exception('La réservation ne peut pas débuter avant 7h ou après 19h.');
+            }
+
+            // vérification de l'heure de fin
+            $endHour = $endDate->format('H');
+            if ($endHour < 7 || $endHour > 19) {
+                // l'heure de fin n'est pas valide
+                throw new \Exception('La réservation ne peut pas se terminer après 19h.');
+            }
+
+
             $reservation->setUser($this->getUser());
             $reservation->setMeetingRoom($meetingroom);
             $totalPrice = $reservation->calculateTotalPrice();
