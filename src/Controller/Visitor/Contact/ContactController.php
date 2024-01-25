@@ -30,9 +30,9 @@ class ContactController extends AbstractController
 
             // Envoi de l'email
             $mailerService->send([
-                "sender_email" => "ridelocation@hotmail.com",
+                "sender_email" => "roomease8@gmail.com",
                 "sender_name" => "Contact",
-                "recipient_email" => "ridelocation@hotmail.com",
+                "recipient_email" => "roomease8@gmail.com",
                 "subject" => "Nouveau message de contact",
                 "html_template" => "email/contact.html.twig",
                 "context" => [
