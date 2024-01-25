@@ -52,7 +52,7 @@ class MailerService
         $email->from(new Address('roomease8@gmail.com', 'Contact'))
             ->to($user->getEmail())
             ->subject('Confirmation de votre réservation')
-            ->html($this->twig->render('Email/confirmation_reservation_email.html.twig', [
+            ->html($this->twig->render('email/confirmation_reservation_email.html.twig', [
                 'reservation' => $reservation,
             ]));
 
@@ -65,7 +65,7 @@ class MailerService
         $email->from(new Address('roomease8@gmail.com', 'Contact'))
             ->to($user->getEmail())
             ->subject('Annulation de votre réservation')
-            ->html($this->twig->render('Email/cancellation_reservation_email.html.twig', [
+            ->html($this->twig->render('email/cancellation_reservation_email.html.twig', [
                 'reservation' => $reservation,
             ]));
 
@@ -79,7 +79,7 @@ class MailerService
             ->from(new Address('roomease8@gmail.com', 'Contact'))
             ->to($user->getEmail())
             ->subject('Rappel de réservation')
-            ->html($this->twig->render('Email/reminder_email.html.twig', [
+            ->html($this->twig->render('email/reminder_email.html.twig', [
                 'reservation' => $reservation,
             ]));
 
